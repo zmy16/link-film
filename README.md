@@ -7,7 +7,7 @@ Website ini menyediakan link streaming film terbaru dan terbaik. Website ini men
 - Daftar link ke situs streaming film populer.
 - Desain responsif yang menyesuaikan tampilan dengan ukuran layar perangkat.
 - Efek hover dan transisi pada link untuk pengalaman pengguna yang lebih baik.
-- Lazy loading untuk gambar, meningkatkan performa website.
+- Mencegah pengguna mengakses developer tools seperti `Ctrl+U`, `F12`, dan `Inspect Element` untuk melindungi konten halaman.
 
 ## Daftar Situs
 
