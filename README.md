@@ -38,4 +38,4 @@ Proyek ini terdiri dari beberapa file utama:
 
 ## Screenshot
 
-![Tampilan Utama](preview/preview.jpg)
+![Tampilan Utama](assets/images/preview/preview.jpg)
