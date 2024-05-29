@@ -1,45 +1,54 @@
 document.addEventListener("DOMContentLoaded", () => {
   const links = document.querySelectorAll("#film-sites a");
+
+  // Menambahkan efek hover pada link
   links.forEach((link) => {
     link.addEventListener("mouseover", () => {
       link.style.color = "#ffffff";
     });
+
     link.addEventListener("mouseout", () => {
       link.style.color = "#ffcc00";
     });
-    link.addEventListener("click", () => {
-      link.innerHTML = "Loading...";
-    });
   });
-});
 
-// Lazy loading images
-document.addEventListener("DOMContentLoaded", function () {
-  let lazyloadImages = document.querySelectorAll("img.lazy");
-  let lazyloadThrottleTimeout;
+  // Disable right-click
+  document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-  function lazyload() {
-    if (lazyloadThrottleTimeout) {
-      clearTimeout(lazyloadThrottleTimeout);
+  // Disable developer tools
+  const preventDevTools = (event) => {
+    if (
+      event.key === "F12" ||
+      (event.ctrlKey && event.shiftKey && event.key === "I") ||
+      (event.ctrlKey && event.key === "U") ||
+      (event.ctrlKey && event.shiftKey && event.key === "C")
+    ) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
     }
+  };
 
-    lazyloadThrottleTimeout = setTimeout(function () {
-      let scrollTop = window.pageYOffset;
-      lazyloadImages.forEach(function (img) {
-        if (img.offsetTop < window.innerHeight + scrollTop) {
-          img.src = img.dataset.src;
-          img.classList.remove("lazy");
-        }
-      });
-      if (lazyloadImages.length == 0) {
-        document.removeEventListener("scroll", lazyload);
-        window.removeEventListener("resize", lazyload);
-        window.removeEventListener("orientationChange", lazyload);
-      }
-    }, 20);
-  }
+  document.addEventListener("keydown", preventDevTools);
+  document.addEventListener("keyup", preventDevTools);
 
-  document.addEventListener("scroll", lazyload);
-  window.addEventListener("resize", lazyload);
-  window.addEventListener("orientationChange", lazyload);
+  // Additional prevention for contextmenu and F12
+  window.addEventListener("keydown", function (event) {
+    if (event.key === "F12") {
+      event.preventDefault();
+    }
+  });
+
+  // Check for other methods to open dev tools
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey && (e.key === "U" || e.key === "u")) {
+      e.preventDefault();
+    }
+    if (
+      e.ctrlKey &&
+      e.shiftKey &&
+      (e.key === "I" || e.key === "C" || e.key === "J")
+    ) {
+      e.preventDefault();
+    }
+  });
 });
