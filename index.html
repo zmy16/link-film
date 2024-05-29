@@ -3,8 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <meta name="description" content="Link streaming film terbaru dan terbaik">
+    <meta name="keywords" content="streaming film, film terbaru, film online">
+    <meta name="author" content="Nama Anda">
     <title>Link Streaming Film</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #1f1f1f;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            margin: 0;
+            color: #ffcc00;
+        }
+        main {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+        li {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: #1f1f1f;
+            border-radius: 8px;
+            transition: transform 0.3s, background-color 0.3s, opacity 0.3s;
+        }
+        li:hover {
+            transform: scale(1.05);
+            background-color: #333333;
+        }
+        a {
+            text-decoration: none;
+            color: #ffcc00;
+            font-size: 1.2rem;
+            display: inline-block;
+            width: 100%;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+            a {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,13 +77,59 @@
     </header>
     <main>
         <ul id="film-sites">
-            <li><a href="http://179.43.163.50/" target="_blank">Rebahin</a></li>
-            <li><a href="https://D21.Fun/" target="_blank">Layar Kaca 21</a></li>
-            <li><a href="http://124.150.139.91/" target="_blank">Kita Nonton</a></li>
-            <li><a href="https://tv.idlixofficial.net/" target="_blank">IDLIX</a></li>
-            <li><a href="https://ngefilm21.pw/" target="_blank">NgeFilm21</a></li>
+            <li><a href="http://179.43.163.50/" target="_blank" aria-label="Link to Rebahin">Rebahin</a></li>
+            <li><a href="https://D21.Fun/" target="_blank" aria-label="Link to Layar Kaca 21">Layar Kaca 21</a></li>
+            <li><a href="http://124.150.139.91/" target="_blank" aria-label="Link to Kita Nonton">Kita Nonton</a></li>
+            <li><a href="https://tv.idlixofficial.net/" target="_blank" aria-label="Link to IDLIX">IDLIX</a></li>
+            <li><a href="https://ngefilm21.pw/" target="_blank" aria-label="Link to NgeFilm21">NgeFilm21</a></li>
         </ul>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('#film-sites a');
+            links.forEach(link => {
+                link.addEventListener('mouseover', () => {
+                    link.style.color = '#ffffff';
+                });
+                link.addEventListener('mouseout', () => {
+                    link.style.color = '#ffcc00';
+                });
+                link.addEventListener('click', () => {
+                    link.innerHTML = 'Loading...';
+                });
+            });
+        });
+
+        // Lazy loading images
+        document.addEventListener("DOMContentLoaded", function() {
+            let lazyloadImages = document.querySelectorAll("img.lazy");    
+            let lazyloadThrottleTimeout;
+
+            function lazyload () {
+                if(lazyloadThrottleTimeout) {
+                    clearTimeout(lazyloadThrottleTimeout);
+                }    
+
+                lazyloadThrottleTimeout = setTimeout(function() {
+                    let scrollTop = window.pageYOffset;
+                    lazyloadImages.forEach(function(img) {
+                        if(img.offsetTop < (window.innerHeight + scrollTop)) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                        }
+                    });
+                    if(lazyloadImages.length == 0) { 
+                        document.removeEventListener("scroll", lazyload);
+                        window.removeEventListener("resize", lazyload);
+                        window.removeEventListener("orientationChange", lazyload);
+                    }
+                }, 20);
+            }
+
+            document.addEventListener("scroll", lazyload);
+            window.addEventListener("resize", lazyload);
+            window.addEventListener("orientationChange", lazyload);
+        });
+    </script>
 </body>
-<script src="assets/JS/main.js"></script>
 </html>
