@@ -36,7 +36,7 @@ Ensure you have the following installed:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/link-streaming-film.git
+   git clone https://github.com/zmy16/link-streaming-film.git
    ```
 
 2. **Navigate to the project directory:**
