@@ -30,4 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   document.addEventListener("copy", (event) => event.preventDefault());
+
+  // Disable text selection
+  document.addEventListener("selectstart", (event) => event.preventDefault());
+  document.addEventListener("mousedown", (event) => event.preventDefault());
 });
