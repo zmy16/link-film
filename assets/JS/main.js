@@ -11,8 +11,4 @@ document.addEventListener("DOMContentLoaded", () => {
       link.style.color = "#ffcc00";
     });
   });
-
-  // Disable text selection
-  document.addEventListener("selectstart", (event) => event.preventDefault());
-  document.addEventListener("mousedown", (event) => event.preventDefault());
-});
+})
