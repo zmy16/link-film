@@ -12,25 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Disable right-click, view source, inspect element, copy, text selection, and Ctrl + A
-  document.addEventListener("contextmenu", (event) => event.preventDefault());
-  document.addEventListener("keydown", (event) => {
-    if (
-      event.ctrlKey &&
-      (event.key === "u" ||
-        event.key === "i" ||
-        event.key === "c" ||
-        event.key === "j" ||
-        event.key === "a")
-    ) {
-      event.preventDefault();
-    }
-    if (event.key === "F12") {
-      event.preventDefault();
-    }
-  });
-  document.addEventListener("copy", (event) => event.preventDefault());
-
   // Disable text selection
   document.addEventListener("selectstart", (event) => event.preventDefault());
   document.addEventListener("mousedown", (event) => event.preventDefault());
