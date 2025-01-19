@@ -1,14 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const links = document.querySelectorAll("#film-sites a");
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
 
-  // Menambahkan efek hover pada link
-  links.forEach((link) => {
-    link.addEventListener("mouseover", () => {
-      link.style.color = "#ffffff";
-    });
+document.addEventListener('selectstart', function (e) {
+  e.preventDefault();
+});
 
-    link.addEventListener("mouseout", () => {
-      link.style.color = "#ffcc00";
-    });
-  });
-})
+document.addEventListener('copy', function (e) {
+  e.preventDefault();
+});
