@@ -1,11 +1,19 @@
-document.addEventListener('contextmenu', function (e) {
-  e.preventDefault();
-});
+const filterBtns = document.querySelectorAll('.filter-btn');
+const movieCards = document.querySelectorAll('.movie-card');
 
-document.addEventListener('selectstart', function (e) {
-  e.preventDefault();
-});
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
 
-document.addEventListener('copy', function (e) {
-  e.preventDefault();
+        filterBtns.forEach(btn => btn.classList.remove('active'));
+        btn.classList.add('active');
+
+        movieCards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    });
 });
