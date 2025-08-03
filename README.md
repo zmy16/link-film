@@ -57,14 +57,6 @@ Ensure you have the following installed:
 2. **Filter Movies:** Use the filter buttons to view Indonesian or international films or all available links.
 3. **Explore Streaming Sites:** Click on any movie card to be directed to the corresponding streaming platform.
 
-## Preview
-
-Here is how the website looks:
-
-- **Header:** The title "Golden Movie Hub" in bright gold, with a sleek design.
-- **Filters:** Toggle between "All," "Streaming Film Indonesia," and "Streaming Film Luar Negeri."
-- **Movie Cards:** Each card represents a streaming platform, offering a brief description.
-- **Hover Effects:** The movie cards highlight with a golden background and smooth transition when hovered over.
 
 ## Contributing
 
@@ -72,4 +64,4 @@ Feel free to fork the repository, open issues, or submit pull requests to improv
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source.
