@@ -1,52 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
-    <title>Golden Movie Hub - Premium Streaming Links</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Golden Movie Hub</h1>
-        </header>
-
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="indonesia">Streaming Film Indonesia</button>
-            <button class="filter-btn" data-filter="luar-negeri">Streaming Film Luar Negeri</button>
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Golden Movie Hub</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFD700'%3E%3Cpath d='M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z'/%3E%3C/svg%3E"
+    />
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="./assets/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+  <body class="h-full bg-dark-900 text-white overflow-auto">
+    <div id="app-wrapper" class="w-full min-h-full flex flex-col">
+      <header
+        class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-md border-b border-gold-500/20"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center h-16 sm:h-20">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div
+                id="logo-container"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center overflow-hidden"
+              >
+                <img
+                  id="logo-img"
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z'/%3E%3C/svg%3E"
+                  alt="Logo"
+                  class="w-6 h-6 sm:w-7 sm:h-7"
+                />
+              </div>
+              <h1
+                id="site-title"
+                class="text-lg sm:text-xl lg:text-2xl font-bold gold-glow text-gold-500"
+              >
+                Golden Movie Hub
+              </h1>
+            </div>
+          </div>
         </div>
-
-        <div class="grid">
-            <a href="https://rebahinxxi1.lol/" target="_blank" class="movie-card" data-category="indonesia">
-                <h2>Rebahin</h2>
-                <p>Streaming Film & Series<br>Indonesia & Luar Negeri</p>
-            </a>
-
-            <a href="http://124.150.139.91/" target="_blank" class="movie-card" data-category="indonesia">
-                <h2>Kita Nonton</h2>
-                <p>Streaming Film & Series<br>Indonesia & Luar Negeri</p>
-            </a>
-
-            <a href="https://ngefilm21.pw/" target="_blank" class="movie-card" data-category="indonesia">
-                <h2>NgeFilm21</h2>
-                <p>Streaming Film & Series<br>Indonesia & Luar Negeri</p>
-            </a>
-
-            <a href="https://lk21.de/" target="_blank" class="movie-card" data-category="luar-negeri">
-                <h2>Layar Kaca 21</h2>
-                <p>Streaming Film & Series<br>Khusus Luar Negeri</p>
-            </a>
-
-            <a href="https://idlixian.com/" target="_blank" class="movie-card" data-category="luar-negeri">
-                <h2>IDLIX</h2>
-                <p>Streaming Film & Series<br>Khusus Luar Negeri</p>
-            </a>
-        </div>
+      </header>
+      <main class="flex-1 w-full">
+        <section
+          class="sticky top-16 sm:top-20 z-40 bg-dark-900/95 backdrop-blur-md border-b border-dark-700 py-4"
+        >
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+              class="flex items-center gap-2 sm:gap-3 justify-center sm:justify-start pb-1"
+            >
+              <button
+                data-filter="all"
+                class="filter-btn active flex-shrink-0 px-4 sm:px-6 py-2 rounded-full border border-gold-500/50 text-xs sm:text-sm font-medium ripple"
+              >
+                Semua
+              </button>
+              <button
+                data-filter="indonesia"
+                class="filter-btn flex-shrink-0 px-4 sm:px-6 py-2 rounded-full border border-dark-500 text-gray-400 text-xs sm:text-sm font-medium ripple"
+              >
+                🇮🇩 Indonesia
+              </button>
+              <button
+                data-filter="foreign"
+                class="filter-btn flex-shrink-0 px-4 sm:px-6 py-2 rounded-full border border-dark-500 text-gray-400 text-xs sm:text-sm font-medium ripple"
+              >
+                🌍 Luar Negeri
+              </button>
+            </div>
+          </div>
+        </section>
+        <!-- Sites Grid -->
+        <section class="py-8 sm:py-12">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-6 sm:mb-8">
+              <span id="site-count" class="text-gray-500 text-xs sm:text-sm"
+                >5 situs tersedia</span
+              >
+            </div>
+            <div
+              id="sites-grid"
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+            >
+              <!-- Cards will be injected here -->
+            </div>
+            <div id="no-results" class="hidden text-center py-16">
+              <div
+                class="w-16 h-16 mx-auto mb-4 rounded-full bg-dark-700 flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewbox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <p class="text-gray-400 text-lg font-medium">No sites found</p>
+              <p class="text-gray-500 text-sm mt-1">
+                Try adjusting your search or filter
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <!-- Footer -->
+      <footer class="hidden"></footer>
     </div>
-
-    <script src="assets/JS/main.js"></script>
-</body>
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/cf.js"></script>
+  </body>
 </html>
