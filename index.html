@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="id" class="h-full scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Kumpulan link streaming film Indonesia dan luar negeri terbaik dan terlengkap." />
     <title>Golden Movie Hub</title>
     <link
       rel="icon"
@@ -14,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <script src="./assets/js/tailwind-config.js"></script>
@@ -23,105 +24,249 @@
   </head>
   <body class="h-full bg-dark-900 text-white overflow-auto">
     <div id="app-wrapper" class="w-full min-h-full flex flex-col">
-      <header
-        class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-md border-b border-gold-500/20"
-      >
+
+      <!-- ─── NAVBAR ─── -->
+      <header class="sticky top-0 z-50 bg-dark-900/90 backdrop-blur-xl border-b border-gold-500/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center h-16 sm:h-20">
-            <div class="flex items-center gap-2 sm:gap-3">
+          <div class="flex items-center justify-between h-16 sm:h-18">
+
+            <!-- Logo + Title -->
+            <div class="flex items-center gap-3">
               <div
                 id="logo-container"
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center overflow-hidden"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-500/30"
               >
                 <img
                   id="logo-img"
                   src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z'/%3E%3C/svg%3E"
                   alt="Logo"
-                  class="w-6 h-6 sm:w-7 sm:h-7"
+                  class="w-5 h-5 sm:w-6 sm:h-6"
                 />
               </div>
-              <h1
-                id="site-title"
-                class="text-lg sm:text-xl lg:text-2xl font-bold gold-glow text-gold-500"
-              >
+              <h1 id="site-title" class="text-lg sm:text-xl font-bold gold-glow text-gold-500 tracking-tight">
                 Golden Movie Hub
               </h1>
             </div>
+
+
           </div>
         </div>
       </header>
+
       <main class="flex-1 w-full">
-        <section
-          class="sticky top-16 sm:top-20 z-40 bg-dark-900/95 backdrop-blur-md border-b border-dark-700 py-4"
-        >
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-              class="flex items-center gap-2 sm:gap-3 justify-center sm:justify-start pb-1"
-            >
-              <button
-                data-filter="all"
-                class="filter-btn active flex-shrink-0 px-4 sm:px-6 py-2 rounded-full border border-gold-500/50 text-xs sm:text-sm font-medium ripple"
-              >
-                Semua
-              </button>
-              <button
-                data-filter="indonesia"
-                class="filter-btn flex-shrink-0 px-4 sm:px-6 py-2 rounded-full border border-dark-500 text-gray-400 text-xs sm:text-sm font-medium ripple"
-              >
-                🇮🇩 Indonesia
-              </button>
-              <button
-                data-filter="foreign"
-                class="filter-btn flex-shrink-0 px-4 sm:px-6 py-2 rounded-full border border-dark-500 text-gray-400 text-xs sm:text-sm font-medium ripple"
-              >
-                🌍 Luar Negeri
-              </button>
+
+        <!-- ─── HERO ─── -->
+        <section class="hero-bg relative overflow-hidden py-16 sm:py-24">
+          <!-- Decorative blobs -->
+          <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-gold-500/5 blur-3xl"></div>
+            <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-gold-500/5 blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold-500/3 blur-[100px]"></div>
+          </div>
+
+          <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Eyebrow -->
+            <div class="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs sm:text-sm font-medium px-4 py-1.5 rounded-full mb-6 backdrop-blur-sm">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+              </svg>
+              Koleksi Link Streaming Terpilih
+            </div>
+
+            <!-- Headline -->
+            <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight mb-4">
+              <span class="text-white">Nonton Film </span>
+              <span class="gradient-text">Favoritmu</span>
+              <br />
+              <span class="text-white">Kapan Saja</span>
+            </h2>
+
+            <p class="text-gray-400 text-sm sm:text-base lg:text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+              Kumpulan situs streaming film &amp; series Indonesia maupun luar negeri dengan subtitle Bahasa Indonesia.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="relative max-w-lg mx-auto group">
+              <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-gold-500/30 to-gold-600/20 blur-sm group-focus-within:blur-md transition-all duration-300"></div>
+              <div class="relative flex items-center bg-dark-800/90 border border-dark-600/80 group-focus-within:border-gold-500/50 rounded-2xl overflow-hidden transition-all duration-300 shadow-xl">
+                <svg class="w-5 h-5 text-gray-500 group-focus-within:text-gold-400 ml-4 flex-shrink-0 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+                </svg>
+                <input
+                  id="search-input"
+                  type="text"
+                  placeholder="Cari situs streaming..."
+                  class="search-input flex-1 bg-transparent px-4 py-3.5 sm:py-4 text-sm sm:text-base text-white placeholder-gray-500 outline-none"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+                <button id="clear-search" class="hidden mr-3 p-1 rounded-lg text-gray-500 hover:text-gray-300 hover:bg-dark-600 transition-all">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ─── STATS BAR ─── -->
+        <section class="border-y border-dark-700/60 bg-dark-800/40 backdrop-blur-sm">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-6 sm:gap-10">
+              <div class="stat-item flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gold-500/10 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-gold-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-gold-400 font-bold text-sm leading-none" id="total-count">5</p>
+                  <p class="text-gray-500 text-xs mt-0.5">Total Situs</p>
+                </div>
+              </div>
+              <div class="w-px h-8 bg-dark-600 hidden sm:block"></div>
+              <div class="stat-item flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                  <span class="text-sm leading-none">🇮🇩</span>
+                </div>
+                <div>
+                  <p class="text-red-400 font-bold text-sm leading-none" id="indo-count">3</p>
+                  <p class="text-gray-500 text-xs mt-0.5">Situs Indo</p>
+                </div>
+              </div>
+              <div class="w-px h-8 bg-dark-600 hidden sm:block"></div>
+              <div class="stat-item flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <span class="text-sm leading-none">🌍</span>
+                </div>
+                <div>
+                  <p class="text-blue-400 font-bold text-sm leading-none" id="foreign-count">2</p>
+                  <p class="text-gray-500 text-xs mt-0.5">Situs Luar</p>
+                </div>
+              </div>
+              <div class="w-px h-8 bg-dark-600 hidden sm:block"></div>
+              <div class="stat-item flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-green-400 font-bold text-sm leading-none">HD</p>
+                  <p class="text-gray-500 text-xs mt-0.5">Kualitas</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
-        <!-- Sites Grid -->
+
+        <!-- ─── FILTER + GRID ─── -->
         <section class="py-8 sm:py-12">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6 sm:mb-8">
-              <span id="site-count" class="text-gray-500 text-xs sm:text-sm"
-                >5 situs tersedia</span
-              >
+
+            <!-- Filter row -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+              <div class="flex items-center gap-2 flex-wrap">
+                <button data-filter="all"
+                  class="filter-btn active flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full border border-gold-500/50 text-xs sm:text-sm font-semibold ripple">
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                  </svg>
+                  Semua
+                </button>
+                <button data-filter="indonesia"
+                  class="filter-btn flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full border border-dark-500 text-gray-400 text-xs sm:text-sm font-semibold ripple">
+                  🇮🇩 Indonesia
+                </button>
+                <button data-filter="foreign"
+                  class="filter-btn flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full border border-dark-500 text-gray-400 text-xs sm:text-sm font-semibold ripple">
+                  🌍 Luar Negeri
+                </button>
+              </div>
+              <span id="site-count" class="text-gray-500 text-xs sm:text-sm bg-dark-700/50 px-3 py-1.5 rounded-full border border-dark-600/50">
+                5 situs tersedia
+              </span>
             </div>
-            <div
-              id="sites-grid"
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
-            >
-              <!-- Cards will be injected here -->
+
+            <!-- Category Divider: Indonesia -->
+            <div id="section-indonesia" class="category-section mb-10">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">🇮🇩</span>
+                  <h3 class="text-base sm:text-lg font-bold text-white">Film Indonesia</h3>
+                  <span class="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/25 font-medium" id="indo-label-count">3 situs</span>
+                </div>
+                <div class="flex-1 h-px bg-gradient-to-r from-red-500/30 to-transparent"></div>
+              </div>
+              <div id="grid-indonesia" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"></div>
             </div>
-            <div id="no-results" class="hidden text-center py-16">
-              <div
-                class="w-16 h-16 mx-auto mb-4 rounded-full bg-dark-700 flex items-center justify-center"
-              >
-                <svg
-                  class="w-8 h-8 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewbox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+
+            <!-- Category Divider: Foreign -->
+            <div id="section-foreign" class="category-section mb-10">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">🌍</span>
+                  <h3 class="text-base sm:text-lg font-bold text-white">Film Luar Negeri</h3>
+                  <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/25 font-medium" id="foreign-label-count">2 situs</span>
+                </div>
+                <div class="flex-1 h-px bg-gradient-to-r from-blue-500/30 to-transparent"></div>
+              </div>
+              <div id="grid-foreign" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"></div>
+            </div>
+
+            <!-- Flat grid for search/filter results -->
+            <div id="sites-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"></div>
+
+            <!-- No results -->
+            <div id="no-results" class="hidden text-center py-20">
+              <div class="w-20 h-20 mx-auto mb-5 rounded-2xl bg-dark-700/60 border border-dark-600/50 flex items-center justify-center">
+                <svg class="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
-              <p class="text-gray-400 text-lg font-medium">No sites found</p>
-              <p class="text-gray-500 text-sm mt-1">
-                Try adjusting your search or filter
-              </p>
+              <p class="text-gray-300 text-lg font-semibold mb-1">Tidak ditemukan</p>
+              <p class="text-gray-500 text-sm">Coba kata kunci lain atau ubah filter</p>
             </div>
+
           </div>
         </section>
+
       </main>
-      <!-- Footer -->
-      <footer class="hidden"></footer>
+
+      <!-- ─── FOOTER ─── -->
+      <footer class="border-t border-dark-700/60 bg-dark-800/40 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+
+            <!-- Brand -->
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-md shadow-gold-500/20">
+                <svg class="w-4 h-4" fill="#000" viewBox="0 0 24 24">
+                  <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-bold text-gold-500">Golden Movie Hub</p>
+                <p class="text-xs text-gray-600">Link streaming film terpilih</p>
+              </div>
+            </div>
+
+            <!-- Center note -->
+            <p class="text-xs text-gray-600 text-center max-w-xs">
+              Situs ini hanya mengumpulkan link. Konten tersedia di situs pihak ketiga.
+            </p>
+
+            <!-- Right -->
+            <p class="text-xs text-gray-700">&copy; 2025 Golden Movie Hub</p>
+
+          </div>
+        </div>
+      </footer>
+
     </div>
+
     <script src="./assets/js/app.js"></script>
     <script src="./assets/js/cf.js"></script>
   </body>
