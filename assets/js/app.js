@@ -62,7 +62,6 @@ const sitesData = [
 ];
 
 let currentFilter = "all";
-let searchQuery = "";
 
 const defaultConfig = {
   site_title: "Golden Movie Hub",
@@ -162,15 +161,6 @@ function getFilteredSites() {
       (s) => s.category === currentFilter || s.tags.includes(currentFilter)
     );
   }
-  if (searchQuery.trim()) {
-    const q = searchQuery.toLowerCase();
-    sites = sites.filter(
-      (s) =>
-        s.name.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q) ||
-        s.badge.toLowerCase().includes(q)
-    );
-  }
   return sites;
 }
 
@@ -186,9 +176,6 @@ function renderSites() {
   const foreignLabelCount = document.getElementById("foreign-label-count");
 
   const filteredSites = getFilteredSites();
-  const isSearching = searchQuery.trim().length > 0;
-  const isFiltered = currentFilter !== "all";
-
   siteCount.textContent = `${filteredSites.length} situs tersedia`;
 
   if (filteredSites.length === 0) {
@@ -201,8 +188,8 @@ function renderSites() {
 
   noResults.classList.add("hidden");
 
-  // Show flat grid for search or single-category filter
-  if (isSearching || isFiltered) {
+  // Show flat grid for single-category filter
+  if (currentFilter !== "all") {
     sectionIndo.classList.add("hidden");
     sectionForeign.classList.add("hidden");
     flatGrid.classList.remove("hidden");
@@ -258,34 +245,6 @@ function setupFilters() {
   });
 }
 
-function setupSearch() {
-  const searchInput = document.getElementById("search-input");
-  const clearBtn = document.getElementById("clear-search");
-  if (!searchInput) return;
-
-  let debounceTimer;
-
-  searchInput.addEventListener("input", (e) => {
-    clearTimeout(debounceTimer);
-    searchQuery = e.target.value;
-    if (clearBtn) {
-      clearBtn.classList.toggle("hidden", !searchQuery);
-    }
-    debounceTimer = setTimeout(() => {
-      renderSites();
-    }, 250);
-  });
-
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      searchInput.value = "";
-      searchQuery = "";
-      clearBtn.classList.add("hidden");
-      searchInput.focus();
-      renderSites();
-    });
-  }
-}
 
 async function onConfigChange(config) {
   const siteTitleEl = document.getElementById("site-title");
@@ -329,6 +288,5 @@ if (window.elementSdk) {
 document.addEventListener("DOMContentLoaded", () => {
   updateStats();
   setupFilters();
-  setupSearch();
   renderSites();
 });
