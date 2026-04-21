@@ -5,7 +5,7 @@ const sitesData = [
     category: "indonesia",
     tags: ["indonesia"],
     description: "Film & series Indonesia dan luar negeri dengan subtitle.",
-    url: "https://rebahinxxi1.lol/",
+    url: "https://rebahinxxi3.online/",
     badge: "🇮🇩 Indo",
     badgeColor: "bg-red-500/20 text-red-400 border-red-500/30",
     quality: "HD",
