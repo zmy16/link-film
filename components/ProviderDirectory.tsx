@@ -30,6 +30,11 @@ import SearchBar from "./SearchBar";
 const DEBOUNCE_MS = 200;
 const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 
+type ProviderDirectoryProps = {
+  /** provider id → address resolved from that provider's domain-info page. */
+  liveUrls?: Record<string, string>;
+};
+
 /**
  * A provider is matched against every field the card actually shows, plus the
  * label of the region it belongs to — so "indonesia" finds the three local
@@ -48,7 +53,9 @@ function matches(provider: Provider, nq: string): boolean {
   );
 }
 
-export default function ProviderDirectory() {
+export default function ProviderDirectory({
+  liveUrls,
+}: ProviderDirectoryProps = {}) {
   const [rawQuery, setRawQuery] = useState("");
   const [query, setQuery] = useState("");
   const [regionId, setRegionId] = useState<RegionId>(DEFAULT_REGION);
@@ -91,7 +98,23 @@ export default function ProviderDirectory() {
   }, []);
 
   /* ---- filtering ---------------------------------------------------- */
-  const region = getRegion(regionId);
+  /*
+   * A rotating-domain provider carries an info page as its static `url` plus a
+   * server-resolved address in `liveUrls`. Preferring the resolved one is the
+   * whole point: the card links straight at the site that works right now.
+   */
+  const region = useMemo(() => {
+    const base = getRegion(regionId);
+    if (!liveUrls || Object.keys(liveUrls).length === 0) return base;
+
+    return {
+      ...base,
+      items: base.items.map((item) => {
+        const live = liveUrls[item.id];
+        return live && live !== item.url ? { ...item, url: live } : item;
+      }),
+    };
+  }, [regionId, liveUrls]);
   const nq = prepareQuery(query);
 
   const filtered = useMemo(
