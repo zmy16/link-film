@@ -27,14 +27,6 @@ export const IconPlay = (p: IconProps) => (
   </svg>
 );
 
-export const IconExternal = (p: IconProps) => (
-  <svg {...base(p)}>
-    <path d="M14 4h6v6" />
-    <path d="M10.5 13.5L20 4" />
-    <path d="M19 14.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5" />
-  </svg>
-);
-
 export const IconArrowRight = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M4 12h15" />
@@ -53,6 +45,22 @@ export const IconGlobe = (p: IconProps) => (
     <circle cx="12" cy="12" r="8.5" />
     <path d="M3.5 12h17" />
     <path d="M12 3.5c2.4 2.4 3.6 5.3 3.6 8.5S14.4 18.1 12 20.5C9.6 18.1 8.4 15.2 8.4 12S9.6 5.9 12 3.5z" />
+  </svg>
+);
+
+export const IconGrid = (p: IconProps) => (
+  <svg {...base(p)} strokeWidth={1.7}>
+    <rect x="3.5" y="3.5" width="7" height="7" rx="1.8" />
+    <rect x="13.5" y="3.5" width="7" height="7" rx="1.8" />
+    <rect x="3.5" y="13.5" width="7" height="7" rx="1.8" />
+    <rect x="13.5" y="13.5" width="7" height="7" rx="1.8" />
+  </svg>
+);
+
+export const IconPin = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M19 10.4c0 4.4-4.7 8.3-6.4 9.5a1 1 0 0 1-1.2 0C9.7 18.7 5 14.8 5 10.4a7 7 0 0 1 14 0z" />
+    <circle cx="12" cy="10.2" r="2.6" />
   </svg>
 );
 

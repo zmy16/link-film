@@ -5,6 +5,17 @@ import kitanontonLogo from "@/public/logos/kitanonton.png";
 import ngefilm21Logo from "@/public/logos/ngefilm21.png";
 import layarkaca21Logo from "@/public/logos/layarkaca21.png";
 import idlixLogo from "@/public/logos/idlix.png";
+import pusatfilmLogo from "@/public/logos/pusatfilm.png";
+
+/**
+ * Duta Film is referenced by its public path instead of a static import on
+ * purpose. A static import gives the file a Turbopack content-hashed name
+ * (`dutafilm.16~_qn6wp~.~8.png`), and the dev image optimizer hangs forever on
+ * that name at w=640 — the width the browser picks for the 112px slot on a 2x
+ * screen. The request never resolves, so next/image leaves its blur
+ * placeholder on screen and the logo renders as a smudge. The same bytes served
+ * from /logos/ optimise in ~0.2s. */
+const dutafilmLogo = "/logos/dutafilm.png";
 
 export type RegionId = "all" | "id" | "int";
 
@@ -19,11 +30,18 @@ export type Provider = {
   /** Second line on the poster — the reason to pick this site. */
   tagline: string;
   quality: Quality;
-  /** Destination site. An empty string renders a non-interactive card. */
+  /** Destination site. An empty string renders a non-interactive card.
+   *  For a provider whose domain rotates, this is the info page (the fallback). */
   url: string;
+  /** The provider's "domain info" page, when it has one. The server reads it at
+   *  request time to learn the CURRENT address, so the card links straight to
+   *  the site and the visitor clicks once instead of twice. See lib/live-link.ts. */
+  liveInfoUrl?: string;
   /** Short uppercase kicker shown above the name, e.g. "FILM & SERIES". */
   kicker: string;
-  logo: StaticImageData;
+  /** Static import, or a /public path when the file must bypass the hashed
+   *  static-media name (see dutafilmLogo above). */
+  logo: StaticImageData | string;
   region: Exclude<RegionId, "all">;
 };
 
@@ -80,9 +98,32 @@ export const REGIONS: Region[] = [
         name: "NgeFilm21",
         tagline: "Film & series Indonesia dengan kualitas gambar tinggi.",
         quality: "Full HD",
-        url: "https://ngefilm.live/",
+        // ngefilm.live 301s here; the live domain is read from this page.
+        url: "https://ngefilm.store/",
+        liveInfoUrl: "https://ngefilm.store/",
         kicker: "Kualitas Tinggi",
         logo: ngefilm21Logo,
+        region: "id",
+      },
+      {
+        id: "pusatfilm",
+        name: "PusatFilm21",
+        tagline: "Film & serial TV subtitle Indonesia, katalog luas.",
+        quality: "HD",
+        url: "https://pusatfilm.id/php-information",
+        liveInfoUrl: "https://pusatfilm.id/php-information",
+        kicker: "Film & Serial",
+        logo: pusatfilmLogo,
+        region: "id",
+      },
+      {
+        id: "dutafilm",
+        name: "Duta Film",
+        tagline: "Film, series, dan anime subtitle Indonesia, bisa diunduh.",
+        quality: "HD",
+        url: "https://sportingslammers.com/",
+        kicker: "Bisa Diunduh",
+        logo: dutafilmLogo,
         region: "id",
       },
     ],
@@ -123,6 +164,29 @@ export const REGIONS: Region[] = [
 
 const ALL_PROVIDERS = REGIONS.flatMap((region) => region.items);
 
+/** Indonesian number words, so the catch-all blurb below cannot go stale every
+ *  time a provider is added or removed. */
+const COUNT_WORDS = [
+  "nol",
+  "satu",
+  "dua",
+  "tiga",
+  "empat",
+  "lima",
+  "enam",
+  "tujuh",
+  "delapan",
+  "sembilan",
+];
+
+function countWord(count: number): string {
+  return COUNT_WORDS[count] ?? String(count);
+}
+
+function regionSize(regionId: Exclude<RegionId, "all">): number {
+  return REGIONS.find((region) => region.id === regionId)?.items.length ?? 0;
+}
+
 /** The "see everything" view — a synthetic region whose items are the
  *  concatenation of both real regions, in declaration order. */
 export const ALL_REGION: Region = {
@@ -131,8 +195,7 @@ export const ALL_REGION: Region = {
   short: "Semua",
   code: "ALL",
   title: "Semua Provider",
-  blurb:
-    "Seluruh situs dalam direktori ini — tiga lokal Indonesia, dua mancanegara — semuanya dengan subtitle Bahasa Indonesia.",
+  blurb: `Seluruh situs dalam direktori ini — ${countWord(regionSize("id"))} lokal Indonesia, ${countWord(regionSize("int"))} mancanegara — semuanya dengan subtitle Bahasa Indonesia.`,
   accent: "gold",
   items: ALL_PROVIDERS,
 };
@@ -175,7 +238,7 @@ export function accentClasses(accent: Accent) {
     return {
       text: "text-teal",
       bg: "bg-teal",
-      onAccent: "text-base",
+      onAccent: "text-on-accent",
       border: "border-teal/45",
       posterGlow: "poster-glow-teal",
       spotlight: "spotlight-overlay spotlight-overlay-teal",
@@ -183,14 +246,14 @@ export function accentClasses(accent: Accent) {
       cardHover:
         "hover:border-teal/55 focus-visible:border-teal/55",
       ctaHover:
-        "group-hover:border-transparent group-hover:bg-teal group-hover:text-base",
+        "group-hover:border-transparent group-hover:bg-teal group-hover:text-on-accent",
     };
   }
 
   return {
     text: "text-gold",
     bg: "bg-gold",
-    onAccent: "text-base",
+    onAccent: "text-on-accent",
     border: "border-gold/45",
     posterGlow: "poster-glow-gold",
     spotlight: "spotlight-overlay",
@@ -198,7 +261,7 @@ export function accentClasses(accent: Accent) {
     cardHover:
       "hover:border-gold/55 focus-visible:border-gold/55",
     ctaHover:
-      "group-hover:border-transparent group-hover:bg-gold group-hover:text-base",
+      "group-hover:border-transparent group-hover:bg-gold group-hover:text-on-accent",
   };
 }
 

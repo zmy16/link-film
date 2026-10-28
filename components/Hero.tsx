@@ -1,6 +1,6 @@
 import { REGIONS, TOTAL_PROVIDERS } from "@/lib/providers";
 import { Aurora } from "./motion/MotionFx";
-import { CountUp, GradientText, ShinyText, SplitText } from "./motion/MotionText";
+import { CountUp, GradientText, SplitText } from "./motion/MotionText";
 
 const stats = [
   { label: "Provider", to: TOTAL_PROVIDERS, duration: 1.4, tone: "text-gold" },
@@ -13,26 +13,7 @@ export default function Hero() {
       <Aurora />
 
       <div className="relative mx-auto max-w-[1120px] px-5 pb-12 pt-14 sm:px-8 sm:pb-16 sm:pt-20">
-        <div className="flex items-center gap-4">
-          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5">
-            <span
-              aria-hidden="true"
-              className="h-1.5 w-1.5 rounded-full bg-gold"
-            />
-            <ShinyText
-              speed={5.5}
-              className="text-[10px] font-semibold uppercase tracking-[0.2em]"
-            >
-              Kurasi manual, tanpa iklan pop-up
-            </ShinyText>
-          </span>
-          <span className="hidden h-px flex-1 bg-line sm:block" aria-hidden="true" />
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-muted sm:block">
-            {TOTAL_PROVIDERS} situs · {REGIONS.length} region
-          </span>
-        </div>
-
-        <h1 className="mt-7 font-display text-[38px] font-extrabold leading-[1.02] tracking-[-0.038em] text-ink sm:text-[58px] md:text-[72px]">
+        <h1 className="font-display text-[38px] font-extrabold leading-[1.02] tracking-[-0.038em] text-ink sm:text-[58px] md:text-[72px]">
           <span className="block">
             <SplitText text="Nonton film," stagger={0.022} />
           </span>

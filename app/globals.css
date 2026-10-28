@@ -25,7 +25,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  /*
+   * `clip`, not `hidden`: `overflow-x: hidden` on <body> turns it into a
+   * scroll container, so the sticky header never sticks (it scrolls away with
+   * the page). `clip` trims horizontal overflow without creating one.
+   */
+  overflow-x: clip;
 }
 
 body {
@@ -110,24 +115,6 @@ h6 {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-  }
-
-  /* Travelling highlight for the hero eyebrow. */
-  .shiny-text {
-    --shiny-base: #b4b4bc;
-    background-image: linear-gradient(
-      110deg,
-      var(--shiny-base) 22%,
-      #ffd700 40%,
-      #fff6c2 50%,
-      #ffd700 60%,
-      var(--shiny-base) 78%
-    );
-    background-size: 220% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shine-sweep 5s linear infinite;
   }
 
   /* Cursor-following spotlight; --mx/--my are written by useSpotlight(). */
@@ -215,15 +202,6 @@ h6 {
   }
 }
 
-@keyframes shine-sweep {
-  from {
-    background-position: 120% center;
-  }
-  to {
-    background-position: -120% center;
-  }
-}
-
 @layer utilities {
   /* Logo push-in on card hover; suppressed under reduced motion below. */
   .poster-hover-scale {
@@ -258,11 +236,6 @@ h6 {
     transform: none;
     transition: none;
     opacity: 0;
-  }
-
-  .shiny-text {
-    animation: none;
-    background-position: 0% center;
   }
 
   *,

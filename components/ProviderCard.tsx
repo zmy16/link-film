@@ -59,8 +59,11 @@ export default function ProviderCard({ provider, index }: ProviderCardProps) {
           width={128}
           height={128}
           sizes="(max-width: 640px) 80px, 112px"
-          quality={92}
-          placeholder="blur"
+          quality={75}
+          // A static import gets Next's generated blur placeholder; a /public
+          // path cannot, and a transparent logo would show that blurred plate
+          // through its clear pixels anyway.
+          placeholder={typeof provider.logo === "string" ? "empty" : "blur"}
           className="poster-hover-scale h-20 w-20 object-contain drop-shadow-[0_12px_32px_rgba(0,0,0,0.75)] sm:h-24 sm:w-24 md:h-28 md:w-28"
         />
       </span>

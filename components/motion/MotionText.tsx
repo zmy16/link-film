@@ -149,32 +149,6 @@ export function GradientText({
 }
 
 /* ------------------------------------------------------------------ */
-/* ShinyText — travelling highlight across the hero eyebrow.           */
-/* ------------------------------------------------------------------ */
-
-type ShinyTextProps = {
-  children: React.ReactNode;
-  className?: string;
-  /** Seconds for one full highlight pass. */
-  speed?: number;
-};
-
-export function ShinyText({
-  children,
-  className = "",
-  speed = 5,
-}: ShinyTextProps) {
-  return (
-    <span
-      className={`shiny-text ${className}`}
-      style={{ animationDuration: `${speed}s` }}
-    >
-      {children}
-    </span>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* CountUp — renders the final value on the server, counts up on mount. */
 /* ------------------------------------------------------------------ */
 

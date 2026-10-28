@@ -1,4 +1,3 @@
-import { REGIONS, TOTAL_PROVIDERS } from "@/lib/providers";
 import Logo from "./Logo";
 
 export default function Footer() {
@@ -22,32 +21,9 @@ export default function Footer() {
             </div>
           </div>
 
-          <dl className="flex items-stretch divide-x divide-line">
-            <div className="pr-6">
-              <dd className="font-display text-[15px] font-extrabold tabular-nums text-gold">
-                {String(TOTAL_PROVIDERS).padStart(2, "0")}
-              </dd>
-              <dt className="mt-1.5 text-[9px] uppercase tracking-[0.22em] text-muted">
-                Situs
-              </dt>
-            </div>
-            <div className="px-6">
-              <dd className="font-display text-[15px] font-extrabold tabular-nums text-teal">
-                {String(REGIONS.length).padStart(2, "0")}
-              </dd>
-              <dt className="mt-1.5 text-[9px] uppercase tracking-[0.22em] text-muted">
-                Region
-              </dt>
-            </div>
-            <div className="pl-6">
-              <dd className="font-display text-[15px] font-extrabold tabular-nums text-ink">
-                {new Date().getFullYear()}
-              </dd>
-              <dt className="mt-1.5 text-[9px] uppercase tracking-[0.22em] text-muted">
-                Tahun
-              </dt>
-            </div>
-          </dl>
+          <p className="shrink-0 pt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted tabular-nums">
+            &copy; {new Date().getFullYear()} Golden Movie Hub
+          </p>
         </div>
       </div>
     </footer>

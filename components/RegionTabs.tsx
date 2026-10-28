@@ -2,7 +2,17 @@
 
 import { useRef } from "react";
 
+import { IconGlobe, IconGrid, IconPin } from "@/components/Icons";
 import { accentClasses, type Region, type RegionId } from "@/lib/providers";
+
+/** One icon per region — the count chip alone reads as a number without a
+ *  subject, and the mono "ALL / ID / INT" chips it replaced read as a
+ *  dashboard widget rather than an editorial index. */
+const REGION_ICON = {
+  all: IconGrid,
+  id: IconPin,
+  int: IconGlobe,
+} as const;
 
 type RegionTabsProps = {
   regions: Region[];
@@ -59,6 +69,7 @@ export default function RegionTabs({
       {regions.map((region) => {
         const isActive = region.id === value;
         const accent = accentClasses(region.accent);
+        const RegionIcon = REGION_ICON[region.id];
 
         return (
           <button
@@ -74,27 +85,30 @@ export default function RegionTabs({
             tabIndex={isActive ? 0 : -1}
             onClick={() => onChange(region.id)}
             className={[
-              "flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-[12px] font-semibold transition-colors duration-300 sm:px-3.5",
+              // h-9 fixes the tab height so no child can inflate it: the count
+              // chip used to inherit a 24px line-height from a colliding
+              // `text-base` utility, which pushed the active tab to 44px while
+              // its neighbours stayed at 35px.
+              "flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-2 text-[11px] font-semibold transition-colors duration-300 sm:gap-2 sm:px-3.5 sm:text-[12px]",
               isActive
                 ? `${accent.bg} ${accent.onAccent}`
                 : "text-muted hover:bg-surface-2 hover:text-ink",
             ].join(" ")}
           >
-            <span
-              className={[
-                "hidden font-mono text-[9px] font-bold uppercase tracking-[0.1em] sm:inline",
-                isActive ? "opacity-60" : "text-muted/70",
-              ].join(" ")}
-            >
-              {region.code}
-            </span>
+            <RegionIcon
+              size={14}
+              aria-hidden="true"
+              className={isActive ? "opacity-75" : "opacity-70"}
+            />
             <span className="whitespace-nowrap">
               <span className="sm:hidden">{region.short}</span>
               <span className="hidden sm:inline">{region.label}</span>
             </span>
             <span
               className={[
-                "rounded px-1.5 py-0.5 text-[10px] font-bold tabular-nums",
+                // Explicit box: identical in both states whatever line-height
+                // or font-size a future class may introduce.
+                "inline-flex h-[17px] min-w-[17px] items-center justify-center rounded px-1 text-[9.5px] font-bold leading-none tabular-nums sm:h-[18px] sm:min-w-[18px] sm:px-1.5 sm:text-[10px]",
                 isActive ? "bg-base/20" : "bg-surface-2 text-muted",
               ].join(" ")}
             >

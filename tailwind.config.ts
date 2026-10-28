@@ -18,6 +18,15 @@ const config: Config = {
         ink: "#F2F2F4",
         "ink-soft": "#B4B4BC",
         muted: "#8A8A95",
+        // Ink laid on top of a saturated accent fill (gold/teal).
+        //
+        // Deliberately NOT `text-base`: Tailwind also ships a `text-base`
+        // font-size utility (1rem + 1.5rem line-height). With `base` defined
+        // as a colour here the two classes collide — the colour applies AND
+        // the size/line-height apply, which inflated the active region tab to
+        // 44px (vs 35px) and its count badge to 28px (vs 19px), because the
+        // badge inherits that 24px line-height.
+        "on-accent": "#08080A",
         gold: {
           DEFAULT: "#FFD700",
           soft: "#FFE566",
