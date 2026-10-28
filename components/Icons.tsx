@@ -8,7 +8,7 @@ const base = (props: IconProps) => ({
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.5,
+  strokeWidth: 1.6,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
   ...props,
@@ -17,26 +17,51 @@ const base = (props: IconProps) => ({
 export const IconSearch = (p: IconProps) => (
   <svg {...base(p)}>
     <circle cx="11" cy="11" r="6.5" />
-    <path d="M20 20l-4-4" />
+    <path d="M20 20l-4.2-4.2" />
   </svg>
 );
 
 export const IconPlay = (p: IconProps) => (
   <svg {...base(p)}>
-    <path d="M6 4l14 8-14 8V4z" />
+    <path d="M7 4.5l12 7.5-12 7.5z" fill="currentColor" stroke="none" />
   </svg>
 );
 
 export const IconExternal = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M14 4h6v6" />
-    <path d="M10 14L20 4" />
-    <path d="M20 14v6H4V4h6" />
+    <path d="M10.5 13.5L20 4" />
+    <path d="M19 14.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5" />
   </svg>
 );
 
-export const IconDot = (p: IconProps) => (
+export const IconArrowRight = (p: IconProps) => (
   <svg {...base(p)}>
-    <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
+    <path d="M4 12h15" />
+    <path d="M13.5 6.5L20 12l-6.5 5.5" />
+  </svg>
+);
+
+export const IconClose = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M6 6l12 12M18 6L6 18" />
+  </svg>
+);
+
+export const IconGlobe = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M3.5 12h17" />
+    <path d="M12 3.5c2.4 2.4 3.6 5.3 3.6 8.5S14.4 18.1 12 20.5C9.6 18.1 8.4 15.2 8.4 12S9.6 5.9 12 3.5z" />
+  </svg>
+);
+
+export const IconShuffle = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4 7h3.2l3.1 4.4" />
+    <path d="M4 17h3.2l9.3-10H20" />
+    <path d="M16.5 4.5L20 7l-3.5 2.5" />
+    <path d="M16.5 14.5L20 17l-3.5 2.5" />
+    <path d="M13.6 13.2l1.6 1.8h4.8" />
   </svg>
 );

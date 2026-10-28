@@ -3,22 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #FFD700;
-  --color-background: #0A0A0B;
-  --color-surface: #141416;
-  --color-stroke: #3A3A40;
-  --color-ink: #EDEDED;
-  --color-muted: #8A8A90;
+  --color-base: #08080a;
+  --color-elevated: #101013;
+  --color-surface: #16161a;
+  --color-surface-2: #1e1e24;
+  --color-line: #2a2a31;
+  --color-line-strong: #3a3a44;
+  --color-ink: #f2f2f4;
+  --color-ink-soft: #b4b4bc;
+  --color-muted: #8a8a95;
+  --color-gold: #ffd700;
+  --color-gold-soft: #ffe566;
+  --color-teal: #2dd4bf;
   color-scheme: dark;
 }
 
-html, body {
-  background-color: var(--color-background);
+html,
+body {
+  background-color: var(--color-base);
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 body {
@@ -27,15 +34,22 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 360px) {
-  h1 { letter-spacing: -0.025em; }
-}
-
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   letter-spacing: -0.02em;
 }
 
@@ -43,54 +57,220 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-tap-highlight-color: transparent;
 }
 
+::selection {
+  background: var(--color-gold);
+  color: var(--color-base);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-track {
-  background: #0A0A0B;
+  background: var(--color-base);
 }
 ::-webkit-scrollbar-thumb {
-  background: #3A3A40;
-  border-radius: 0;
+  background: var(--color-line-strong);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFD700;
+  background: var(--color-gold);
 }
 
-::selection {
-  background: #FFD700;
-  color: #0A0A0B;
+@layer components {
+  /* Faint film grain — printed texture instead of a flat gradient wash.
+     Stays under 5% so it never fights the type. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Animated gold gradient, driven by GSAP's backgroundPosition tween. */
+  .gradient-sweep {
+    background-image: linear-gradient(
+      100deg,
+      #c9a900 0%,
+      #ffd700 22%,
+      #fff3a8 42%,
+      #ffd700 62%,
+      #c9a900 100%
+    );
+    background-size: 200% auto;
+    background-position: 0% center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Travelling highlight for the hero eyebrow. */
+  .shiny-text {
+    --shiny-base: #b4b4bc;
+    background-image: linear-gradient(
+      110deg,
+      var(--shiny-base) 22%,
+      #ffd700 40%,
+      #fff6c2 50%,
+      #ffd700 60%,
+      var(--shiny-base) 78%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine-sweep 5s linear infinite;
+  }
+
+  /* Cursor-following spotlight; --mx/--my are written by useSpotlight(). */
+  .spotlight-overlay {
+    background-image: radial-gradient(
+      240px circle at var(--mx, 50%) var(--my, -10%),
+      rgba(255, 215, 0, 0.11),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 450ms ease;
+  }
+
+  .spotlight-overlay-teal {
+    background-image: radial-gradient(
+      240px circle at var(--mx, 50%) var(--my, -10%),
+      rgba(45, 212, 191, 0.11),
+      transparent 70%
+    );
+  }
+
+  .spotlight-host:hover .spotlight-overlay,
+  .spotlight-host:focus-visible .spotlight-overlay {
+    opacity: 1;
+  }
+
+  /* React Bits "GlareHover": a light band that sweeps across the poster. */
+  .glare {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .glare::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -55%;
+    width: 34%;
+    height: 220%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.12),
+      transparent
+    );
+    transform: rotate(16deg) translateX(0);
+    opacity: 0;
+    transition:
+      transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 260ms ease;
+  }
+
+  .group:hover .glare::after,
+  .group:focus-visible .glare::after {
+    opacity: 1;
+    transform: rotate(16deg) translateX(430%);
+  }
+
+  .poster-glow-gold {
+    background-image: radial-gradient(
+      70% 42% at 50% 30%,
+      rgba(255, 215, 0, 0.15),
+      rgba(255, 215, 0, 0) 72%
+    );
+  }
+
+  .poster-glow-teal {
+    background-image: radial-gradient(
+      70% 42% at 50% 30%,
+      rgba(45, 212, 191, 0.15),
+      rgba(45, 212, 191, 0) 72%
+    );
+  }
+
+  .poster-scrim {
+    background-image: linear-gradient(
+      to top,
+      var(--color-base) 4%,
+      rgba(8, 8, 10, 0.95) 30%,
+      rgba(8, 8, 10, 0.5) 56%,
+      rgba(8, 8, 10, 0) 84%
+    );
+  }
 }
 
-@keyframes pulseBar {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
-}
-.bar-pulse {
-  animation: pulseBar 2s ease-in-out infinite;
+@keyframes shine-sweep {
+  from {
+    background-position: 120% center;
+  }
+  to {
+    background-position: -120% center;
+  }
 }
 
-@keyframes fadeRise {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.card-enter {
-  animation: fadeRise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+@layer utilities {
+  /* Logo push-in on card hover; suppressed under reduced motion below. */
+  .poster-hover-scale {
+    transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  .group:hover .poster-hover-scale {
+    transform: scale(1.06);
+  }
+
+  /* Accent hairline that draws left-to-right on hover. */
+  .rule-draw {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .group:hover .rule-draw,
+  .group:focus-visible .rule-draw {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  .poster-hover-scale,
+  .group:hover .poster-hover-scale,
+  .rule-draw,
+  .group:hover .rule-draw,
+  .glare::after,
+  .group:hover .glare::after {
+    transform: none;
+    transition: none;
+    opacity: 0;
+  }
+
+  .shiny-text {
+    animation: none;
+    background-position: 0% center;
+  }
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .bar-pulse { animation: none !important; }
-  .card-enter { animation: none !important; opacity: 1 !important; }
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
 }

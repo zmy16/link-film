@@ -1,26 +1,27 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const inter = Inter({
+const sora = Sora({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-sans",
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-display",
   display: "swap",
 });
-const jetbrains = JetBrains_Mono({
+
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mono",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.link-film.eu.org"),
-  title: "Golden Movie Hub",
+  title: "Golden Movie Hub — Direktori Situs Streaming Film & Series",
   description:
-    "Kumpulan situs streaming film & series Indonesia maupun luar negeri dengan subtitle Bahasa Indonesia.",
+    "Kumpulan situs streaming film & series Indonesia maupun luar negeri dengan subtitle Bahasa Indonesia. Pilih provider, langsung tonton.",
   alternates: {
     canonical: "/",
   },
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     apple: "/icon.svg",
   },
   openGraph: {
-    title: "Golden Movie Hub",
+    title: "Golden Movie Hub — Direktori Situs Streaming",
     description:
       "Kumpulan situs streaming film & series Indonesia maupun luar negeri dengan subtitle Bahasa Indonesia.",
     url: "https://www.link-film.eu.org",
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Golden Movie Hub",
+    title: "Golden Movie Hub — Direktori Situs Streaming",
     description:
       "Kumpulan situs streaming film & series Indonesia maupun luar negeri dengan subtitle Bahasa Indonesia.",
   },
@@ -51,15 +52,15 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0A0A0B",
+  themeColor: "#08080A",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className={`${inter.variable} ${jetbrains.variable}`}>
-      <body className="min-h-screen bg-background text-ink font-sans antialiased">
+    <html lang="id" className={`${sora.variable} ${inter.variable}`}>
+      <body className="min-h-screen bg-base font-sans text-ink antialiased">
         {children}
         <Analytics />
       </body>
