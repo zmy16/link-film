@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="./app/icon.svg" width="80" height="80" alt="Golden Movie Hub" />
+<img src="./app/icon.svg" width="76" height="76" alt="Golden Movie Hub" />
 
 # Golden Movie Hub
 
-**Direktori situs streaming film & series Indonesia maupun luar negeri, dengan subtitle Bahasa Indonesia.**
+**A directory of streaming sites — Indonesian and international — with Indonesian subtitles.**
 
-Satu halaman, tanpa iklan pop-up, tanpa player sendiri. Pilih provider, langsung tonton.
+One page. No pop-up ads. No player of our own. Pick a provider, watch.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2.6-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=flat-square&logo=react&logoColor=black)
@@ -14,384 +14,377 @@ Satu halaman, tanpa iklan pop-up, tanpa player sendiri. Pilih provider, langsung
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.4.6-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![GSAP](https://img.shields.io/badge/GSAP-3.15-88CE02?style=flat-square&logo=greensock&logoColor=black)
 
-
-[**link-film.eu.org**](https://www.link-film.eu.org)
+[**www.link-film.eu.org**](https://www.link-film.eu.org)
 
 </div>
 
 ---
 
-## Daftar Isi
+## At a glance
 
-- [Tentang Project](#tentang-project)
-- [Fitur](#fitur)
-- [Tech Stack](#tech-stack)
-- [Cara Kerja](#cara-kerja)
-- [Struktur Project](#struktur-project)
-- [Menjalankan Lokal](#menjalankan-lokal)
-- [Menambah Provider](#menambah-provider)
-- [Design Tokens](#design-tokens)
-- [SEO](#seo)
-- [Aksesibilitas](#aksesibilitas)
-- [Deployment](#deployment)
-- [Catatan Teknis](#catatan-teknis)
-- [Credits](#credits)
-
----
-
-## Tentang Project
-
-Golden Movie Hub adalah **satu halaman statis** yang berfungsi sebagai direktori cepat menuju situs-situs streaming film & series.
-
-Project ini **tidak menyimpan, tidak menyediakan, dan tidak mengalirkan konten apa pun**. Semua film dan series berada di situs masing-masing provider. Yang dilakukan halaman ini hanya dua: menampilkan daftar provider dengan rapi, lalu mengarahkan pengunjung ke sana.
-
-Saat ini terdaftar **7 provider** dalam **2 region**:
-
-| Region | Provider |
+| | |
 |---|---|
-| 🇮🇩 **Film Indonesia** (aksen gold) | Rebahin, Kita Nonton, NgeFilm21, PusatFilm21, Duta Film |
-| 🌐 **Film Luar Negeri** (aksen teal) | Layar Kaca 21, IDLIX |
+| **What it is** | A single-page directory that links out to streaming sites |
+| **What it is not** | A host, mirror, indexer, scraper, or player — no content is stored or streamed here |
+| **Providers** | 7 across 2 regions (5 Indonesian, 2 international) |
+| **Pages** | One route (`/`), statically prerendered, plus `robots.txt` and `sitemap.xml` |
+| **Data source** | A single typed array in `lib/providers.ts` — no database, no CMS |
+| **Rendering** | React Server Component shell + one client island (`ProviderDirectory`) |
+| **Stack** | Next.js 16 App Router · React 19 · TypeScript 5.5 · Tailwind 3.4 |
+| **Dev port** | `3100` by convention |
+
+**Contents**
+
+[Features](#features) · [Stack](#tech-stack) · [How it works](#how-it-works) · [Structure](#project-structure) · [Getting started](#getting-started) · [Adding a provider](#adding-a-provider) · [Design system](#design-system) · [SEO](#seo) · [Deployment](#deployment) · [Troubleshooting](#troubleshooting)
 
 ---
 
-## Fitur
+## Features
 
-- **Filter region** — tab Semua Situs / Film Indonesia / Film Luar Negeri, mengikuti pola ARIA tabs
-- **Pencarian real-time** — mencocokkan nama, tagline, kicker, dan label region, dengan debounce 200ms
-- **Pencarian tahan diakritik** — `kitanonton`, `Kita Nonton`, dan `KÍTA NÓNTON` semuanya menemukan hasil yang sama
-- **Resolusi domain otomatis** — provider yang domainnya berputar dibaca langsung dari halaman info-nya di sisi server, jadi kartu menunjuk ke alamat yang aktif hari ini
-- **Aksen warna per region** — gold untuk lokal, teal untuk mancanegara
-- **Badge kualitas** — HD / Full HD / 4K
-- **Gambar logo dengan fallback** — jika logo gagal dimuat, tampil ikon default
-- **Motion yang menghormati `prefers-reduced-motion`** — animasi masuk, count-up statistik, dan gradient headline dimatikan otomatis
-- **Halaman 404 kustom**
-- **SEO lengkap** — metadata, canonical, Open Graph, Twitter card, `robots.txt`, `sitemap.xml`
-- **Vercel Analytics** terintegrasi
+**Discovery**
 
----
+- **Region tabs** — All / Indonesian / International, implemented as an ARIA tabs pattern
+- **Live search** — matches name, tagline, kicker, and region label, debounced at 200 ms
+- **Diacritic-tolerant matching** — `kitanonton`, `Kita Nonton`, and `KÍTA NÓNTON` all hit the same result
+- **Rotating-domain resolution** — providers whose address changes are read server-side, so cards point at a URL that works today
 
-## Tech Stack
+**Presentation**
 
-| Kategori | Tools |
-|---|---|
-| **Framework** | [Next.js 16.2.6](https://nextjs.org/) — App Router, Turbopack |
-| **UI Library** | [React 19.2.3](https://react.dev/) |
-| **Language** | [TypeScript 5.5.3](https://www.typescriptlang.org/) — `strict: true` |
-| **Styling** | [Tailwind CSS 3.4.6](https://tailwindcss.com/) — design tokens di `tailwind.config.ts` |
-| **Animasi** | [GSAP 3.15](https://gsap.com/) + [`@gsap/react`](https://gsap.com/resources/React/) |
-| **Fonts** | [Sora](https://fonts.google.com/specimen/Sora) (display) + [Inter](https://rsms.me/inter/) (body) via `next/font/google` |
-| **Icons** | SVG line-art buatan sendiri — zero dependency |
-| **Image Processing** | [sharp](https://sharp.pixelplumbing.com/) — AVIF + WebP |
-| **Analytics** | [@vercel/analytics](https://vercel.com/docs/analytics) |
-| **Package Manager** | npm |
+- **Per-region accent** — gold for Indonesian titles, teal for international
+- **Quality badges** — HD / Full HD / 4K
+- **Logo fallback** — a failed image degrades to a default icon instead of a broken box
+- **Motion that respects `prefers-reduced-motion`** — entrance, count-up, and headline sweep all switch off
+- **Custom 404**
 
-### Kenapa pilihan ini?
+**Foundations**
 
-- **`next/font`** — font di-host otomatis, tanpa request ke Google Fonts saat runtime, dan `display: swap` mencegah FOUT.
-- **GSAP** — timeline animasi lebih presisi dibanding CSS keyframes saat butuh stagger dan sinkronisasi antar elemen.
-- **Ikon SVG sendiri** — kontrol penuh atas stroke width, dan bundle jauh lebih kecil dibanding library ikon.
-- **Data provider di satu file** (`lib/providers.ts`) — satu sumber kebenaran, mudah diaudit, tanpa database.
-
-> **Catatan:** project ini memakai **Tailwind v3**, bukan v4. Tidak ada blok `@theme` dan tidak ada `@tailwindcss/postcss`. Semua token ada di `tailwind.config.ts` (`theme.extend`, `theme.screens`).
+- **Zero layout shift** — self-hosted fonts via `next/font` with `display: swap`
+- **Full SEO surface** — metadata, canonical, Open Graph, Twitter card, `robots.txt`, `sitemap.xml`
+- **Vercel Analytics**, async-loaded
 
 ---
 
-## Cara Kerja
+## Tech stack
 
-### Data provider
+| Concern | Choice | Why |
+|---|---|---|
+| Framework | **Next.js 16.2.6** (App Router, Turbopack) | Server components let domain resolution run at request time |
+| UI | **React 19.2.3** | Ships with Next 16 |
+| Language | **TypeScript 5.5.3**, `strict: true` | The provider shape is the contract |
+| Styling | **Tailwind CSS 3.4.6** | Design tokens live in `tailwind.config.ts` |
+| Animation | **GSAP 3.15** + `@gsap/react` | Precise stagger and timeline control beyond CSS keyframes |
+| Type | **Sora** (display) + **Inter** (body) | Loaded via `next/font/google`, self-hosted at build |
+| Icons | Hand-authored SVG | Full control of stroke width, no icon-library weight |
+| Images | **sharp** | AVIF + WebP through the Next image optimizer |
 
-Seluruh data provider hidup di **`lib/providers.ts`** sebagai array `REGIONS`. Tidak ada `components/ProviderDirectory.tsx` yang menyimpan data — komponen itu hanya membaca.
+> **Tailwind v3, not v4.** There is no `@theme` block and no `@tailwindcss/postcss`. Every token lives in `tailwind.config.ts` under `theme.extend`. Some notes in `docs/` were written assuming v4 and do not match the code.
 
-Dari data mentah itu diturunkan:
+---
 
-| Export | Isi |
-|---|---|
-| `REGIONS` | Dua region asli (`id`, `int`) beserta `items`-nya |
-| `ALL_REGION` | Region sintetis "Semua Situs" — gabungan keduanya |
-| `REGION_TABS` / `REGION_COUNTS` | Untuk `RegionTabs` |
-| `TOTAL_PROVIDERS` | Jumlah provider, dipakai statistik di Hero |
-| `accentClasses()` | Peta aksen (`gold` / `teal`) ke kelas Tailwind |
-
-### Resolusi domain (`lib/live-link.ts`)
-
-Sebagian provider tidak punya domain tetap — mereka menerbitkan satu halaman "info domain" yang mengumumkan alamat yang berlaku hari ini, dan alamat itu berubah tiap beberapa minggu.
-
-`resolveLiveUrls()` dijalankan **di server** (lihat `app/page.tsx`, `revalidate = 900`) dan membaca halaman info itu untuk mengambil satu tautan yang berarti "nonton film". Tautan sosial — Telegram, anime portal, bookmark — sengaja diabaikan.
-
-Kalau pembacaan gagal (timeout 6 detik, halaman error, atau tidak ada anchor yang cocok), provider **tetap memakai `url` cadangannya**, yaitu halaman info itu sendiri: masih benar, hanya kurang satu klik. **Kegagalan fetch tidak pernah mematikan halaman.**
-
-Saat ini hanya `ngefilm21` dan `pusatfilm` yang punya aturan resolusi. Provider lain tidak pernah di-fetch.
-
-### Pencarian (`lib/normalize.ts`)
-
-Normalisasi dilakukan identik pada query maupun pada setiap field yang dicari:
+## How it works
 
 ```
-NFD → buang combining marks → lowercase → sisakan a-z0-9
+                      ┌─────────────────────────────────────┐
+   lib/providers.ts ──▶  app/page.tsx  (Server Component)    │
+   REGIONS + logos     │                                     │
+                      │  await resolveLiveUrls(ids)         │──▶ lib/live-link.ts
+                      │    ↳ fetch provider info pages      │    (6s timeout, 900s cache)
+                      │                                     │
+                      └───────────────┬─────────────────────┘
+                                      │ liveUrls: Record<id, url>
+                                      ▼
+                      ┌─────────────────────────────────────┐
+                      │  ProviderDirectory  ("use client")  │
+                      │    region state · search · debounce │
+                      │    ↳ ProviderCard × N               │
+                      └─────────────────────────────────────┘
 ```
 
-Input dipotong di `MAX_QUERY_LENGTH` (100 karakter) sebelum diproses.
+### Provider data — one source of truth
+
+Everything lives in `lib/providers.ts`. `ProviderDirectory` holds no data; it only reads.
+
+| Export | Purpose |
+|---|---|
+| `REGIONS` | The two real regions (`id`, `int`) with their `items` |
+| `ALL_REGION` | Synthetic "All sites" region — the concatenation of both |
+| `REGION_TABS` / `REGION_COUNTS` | Inputs for `RegionTabs` |
+| `TOTAL_PROVIDERS` | Provider count, used by the hero statistics |
+| `accentClasses()` | Maps an accent (`gold` / `teal`) to Tailwind class sets |
+| `providerAccent()` | A card always wears its own region's accent, even in "All" |
+
+### Rotating domains — `lib/live-link.ts`
+
+Some providers have no stable domain. They publish a small "domain info" page that announces today's address, and it changes every few weeks. Linking to that page costs the visitor two clicks; the second one is the one that moves.
+
+`resolveLiveUrls()` reads the info page **on the server** (`app/page.tsx`, `revalidate = 900`) and extracts the single anchor that means "watch films". Social links, the anime portal, and bookmark links are deliberately ignored.
+
+**Failure is never fatal.** On timeout, garbage markup, or no matching anchor, the provider keeps its fallback `url` — which is the info page itself: still correct, merely one click longer.
+
+Only `ngefilm21` and `pusatfilm` have rules today. A provider without a rule is never fetched.
+
+### Search — `lib/normalize.ts`
+
+The same normalization runs on the query and on every searched field:
+
+```
+NFD → strip combining marks → lowercase → keep [a-z0-9]
+```
+
+Input is truncated to `MAX_QUERY_LENGTH` (100 characters) before processing.
+
+### Server / client boundary
+
+Only `ProviderDirectory` is a client component (it needs state for the search box and tabs). Everything above it — layout, header, hero, footer, domain resolution — stays on the server.
 
 ---
 
-## Struktur Project
+## Project structure
 
 ```
 link-film/
 ├── app/
-│   ├── layout.tsx              # Root layout, metadata, font loader
-│   ├── page.tsx                # Homepage — Header + Hero + Directory + Footer
-│   ├── not-found.tsx           # Halaman 404 kustom
-│   ├── globals.css             # Design tokens, @layer components/utilities, reduced-motion
+│   ├── layout.tsx              # Root layout · metadata · font loaders
+│   ├── page.tsx                # Server shell · resolves live URLs
+│   ├── not-found.tsx           # Custom 404
+│   ├── globals.css             # CSS variables, @layer components/utilities
+│   ├── robots.ts               # → /robots.txt
+│   ├── sitemap.ts              # → /sitemap.xml
 │   ├── icon.svg                # Favicon
-│   ├── opengraph-image.png     # OG image
-│   ├── robots.ts               # /robots.txt
-│   └── sitemap.ts              # /sitemap.xml
+│   └── opengraph-image.png     # 1200×630 social card
 │
 ├── components/
-│   ├── Header.tsx              # Logo + wordmark, sticky, backdrop-blur
-│   ├── Hero.tsx                # Headline + blurb + statistik
-│   ├── ProviderDirectory.tsx   # ⭐ INTI — state region, search, stagger GSAP
-│   ├── ProviderCard.tsx        # Kartu poster (aspect 4:5)
-│   ├── RegionTabs.tsx          # Tab region (ARIA tabs pattern)
-│   ├── SearchBar.tsx           # Input pencarian
-│   ├── EmptyState.tsx          # Kondisi kosong / tidak ada hasil
-│   ├── Footer.tsx              # Disclaimer + copyright
-│   ├── Logo.tsx                # Clapperboard SVG
-│   ├── Icons.tsx               # Ikon line-art
-│   ├── ScrollProgress.tsx      # Indikator scroll di header
+│   ├── Header.tsx              # Sticky brand bar + scroll progress
+│   ├── Hero.tsx                # Headline, blurb, statistics
+│   ├── ProviderDirectory.tsx   # ★ client island: region state, search, stagger
+│   ├── ProviderCard.tsx        # Poster card (4:5)
+│   ├── RegionTabs.tsx          # ARIA tabs
+│   ├── SearchBar.tsx
+│   ├── EmptyState.tsx
+│   ├── Footer.tsx
+│   ├── Logo.tsx                # Clapperboard mark
+│   ├── Icons.tsx               # Line-art icon set
+│   ├── ScrollProgress.tsx
 │   └── motion/
 │       ├── MotionFx.tsx        # Aurora
-│       └── MotionText.tsx      # CountUp, GradientText, SplitText
+│       └── MotionText.tsx      # CountUp · GradientText · SplitText
 │
 ├── lib/
-│   ├── providers.ts            # ⭐ SUMBER DATA — region, provider, aksen
-│   ├── live-link.ts            # Resolusi domain berputar (server-only)
-│   └── normalize.ts            # Normalisasi query pencarian
+│   ├── providers.ts            # ★ source of truth for all provider data
+│   ├── live-link.ts            # Server-only rotating-domain resolution
+│   └── normalize.ts            # Search normalization
 │
-├── public/
-│   └── logos/                  # 7 logo provider (PNG)
-│
-├── docs/
-│   ├── requirements.md
-│   ├── design.md
-│   └── design-decisions.md
-│
-├── scripts/
-│   └── count-components.mjs    # Hitung komponen (rujukan: docs/design-decisions.md)
-│
-├── tailwind.config.ts          # Design tokens & theme extensions
-├── next.config.mjs             # Turbopack root, format gambar, responsive sizes
-├── postcss.config.mjs          # Tailwind + Autoprefixer
-├── tsconfig.json               # strict mode
-└── AGENTS.md                   # Panduan handover untuk agent/AI berikutnya
+├── public/logos/               # 7 provider logos (PNG)
+├── docs/                       # Requirements, design, design decisions
+├── scripts/count-components.mjs
+├── AGENTS.md                   # Handover guide for AI/agent contributors
+└── tailwind.config.ts · next.config.mjs · tsconfig.json
 ```
 
 ---
 
-## Menjalankan Lokal
+## Getting started
 
-**Prasyarat:** Node.js 18.17+ dan npm.
+**Requirements:** Node.js 18.17+ and npm.
 
 ```bash
-# 1. Clone
 git clone https://github.com/zmy16/link-film.git
 cd link-film
-
-# 2. Install dependencies
 npm install
-
-# 3. Jalankan dev server
 npm run dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000).
-
-Project ini sehari-hari dijalankan di **port 3100**:
+Open <http://localhost:3000>. This project is normally run on port 3100:
 
 ```bash
 npm run dev -- -p 3100
 ```
 
-**Script:**
-
-| Command | Fungsi |
+| Command | Purpose |
 |---|---|
-| `npm run dev` | Dev server dengan Turbopack hot reload |
-| `npm run build` | Build production |
-| `npm run start` | Jalankan hasil build |
-| `npm run lint` | ⚠️ **Belum berfungsi** — `eslint` tidak ada di `devDependencies` (lihat [Catatan Teknis](#catatan-teknis)) |
+| `npm run dev` | Dev server with Turbopack hot reload |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ⚠️ **Broken** — `eslint` is not in `devDependencies`. Use `npx tsc --noEmit` as the gate. |
 
-> **Jangan jalankan `npm run build` saat dev server sedang hidup.** Keduanya berebut `.next/` dan dev server akan rusak. Untuk verifikasi cepat, `npx tsc --noEmit` sudah cukup.
+> **Do not run `npm run build` while the dev server is running.** Both write to `.next/` and the dev server breaks. For a fast correctness check, `npx tsc --noEmit` is enough.
 
 ---
 
-## Menambah Provider
+## Adding a provider
 
-Semua data ada di array `REGIONS` di **`lib/providers.ts`**.
+### 1 · Prepare the logo
 
-### 1. Siapkan logo
+Place a **1000×1000 PNG** in `public/logos/`, transparent unless the mark is designed solid.
 
-Taruh di `public/logos/`, ukuran **1000×1000 PNG** dengan latar transparan (kecuali memang didesain solid).
+Then import it:
 
-- Untuk logo normal, pakai **static import**:
-  ```ts
-  import namasitusLogo from "@/public/logos/namasitus.png";
-  ```
-- Kalau optimizer gambar dev server bermasalah dengan nama file ber-hash, rujuk lewat **path publik**: `logo: "/logos/namasitus.png"`. (Lihat komentar `dutafilmLogo` di `lib/providers.ts` untuk kasus yang pernah terjadi.)
+```ts
+import exampleLogo from "@/public/logos/example.png";
+```
 
-### 2. Tambahkan entry
+If a logo renders as a blurred rectangle, the image optimizer is hanging on its Turbopack-hashed filename. Reference it by public path instead — `logo: "/logos/example.png"` — and see the `dutafilmLogo` comment in `lib/providers.ts` for the full explanation.
+
+### 2 · Add the entry
 
 ```ts
 {
-  id: "nama-situs",              // slug stabil, dipakai sebagai React key
-  name: "Nama Situs",
-  tagline: "Deskripsi singkat maksimal dua baris.",
-  quality: "HD",                 // "HD" | "Full HD" | "4K"
-  url: "https://situs-tujuan.com/",
-  kicker: "FILM & SERIES",       // kicker pendek di atas nama
-  logo: namasitusLogo,
-  region: "id",                  // "id" | "int"
+  id: "example",                        // stable slug, used as the React key
+  name: "Example",
+  tagline: "One line, at most two.",
+  quality: "HD",                        // "HD" | "Full HD" | "4K"
+  url: "https://example.com/",
+  kicker: "FILM & SERIES",              // short label above the name
+  logo: exampleLogo,
+  region: "id",                         // "id" | "int"
 }
 ```
 
-### 3. Kalau domainnya berputar
+Provider counts on the hero and the tabs update themselves — nothing else to edit.
 
-Tambahkan `liveInfoUrl` dan daftarkan aturan di `RULES` pada `lib/live-link.ts`:
+### 3 · If the domain rotates
+
+Add `liveInfoUrl` and a matching rule in `RULES` (`lib/live-link.ts`):
 
 ```ts
-liveInfoUrl: "https://situs-tujuan.com/info"
+liveInfoUrl: "https://example.com/info"
 ```
 
 ```ts
 const RULES: Record<string, Rule> = {
-  "nama-situs": {
-    infoPage: "https://situs-tujuan.com/info",
-    prefer: /nonton\s+film/i,                        // teks anchor tujuan
-    deny: /anime|telegram|t\.me|whatsapp/i,          // yang tidak boleh terpilih
+  example: {
+    infoPage: "https://example.com/info",
+    prefer: /watch\s+film/i,               // anchor text that means "go here"
+    deny: /anime|telegram|t\.me|whatsapp/i, // never pick these
   },
 };
 ```
 
-Tanpa aturan di `RULES`, provider tidak pernah di-fetch dan kartunya memakai `url` statis.
+Without a rule the provider is never fetched and keeps its static `url`.
 
-### 4. Region baru
+### 4 · A new region
 
-Buat object baru di `REGIONS` dengan `accent` (`gold` atau `teal`). Menambah nilai aksen baru berarti menambah cabang di `accentClasses()`.
+Add an object to `REGIONS` with an `accent` of `gold` or `teal`. A brand-new accent also needs a branch in `accentClasses()`.
 
 ---
 
-## Design Tokens
+## Design system
 
-Didefinisikan di `tailwind.config.ts`.
+Tokens are defined once in `tailwind.config.ts`.
 
-### Warna
+### Color
 
-| Token | Hex | Penggunaan |
+| Token | Hex | Use |
 |---|---|---|
-| `base` | `#08080A` | Background halaman |
-| `elevated` | `#101013` | Kartu provider |
+| `base` | `#08080A` | Page background |
+| `elevated` | `#101013` | Provider card |
 | `surface` | `#16161A` | Container |
-| `surface-2` | `#1E1E24` | Lapisan lebih terang |
-| `line` | `#2A2A31` | Border 1px |
-| `line-strong` | `#3A3A44` | Border tegas |
-| `ink` | `#F2F2F4` | Teks utama |
-| `ink-soft` | `#B4B4BC` | Teks sekunder |
+| `surface-2` | `#1E1E24` | Raised layer |
+| `line` | `#2A2A31` | 1px border |
+| `line-strong` | `#3A3A44` | Emphasised border |
+| `ink` | `#F2F2F4` | Primary text |
+| `ink-soft` | `#B4B4BC` | Secondary text |
 | `muted` | `#8A8A95` | Metadata |
-| `gold` | `#FFD700` | Aksen region Indonesia |
-| `teal` | `#2DD4BF` | Aksen region mancanegara |
-| `on-accent` | `#08080A` | Teks di atas fill aksen |
+| `gold` | `#FFD700` | Indonesian accent |
+| `teal` | `#2DD4BF` | International accent |
+| `on-accent` | `#08080A` | Text on a saturated accent fill |
 
-> **`on-accent` jangan diganti `base`.** Tailwind juga punya utility ukuran font bernama `text-base`; begitu `base` didefinisikan sebagai warna, kelas `text-base` memicu **dua** deklarasi sekaligus — warna *dan* ukuran/line-height — yang pernah membuat tab aktif membengkak jadi 44px (dari 35px). Token terpisah ini ada untuk mencegahnya.
+> **Never swap `on-accent` for `base`.** Tailwind also ships a font-size utility named `text-base`. Once `base` is a color, the class `text-base` emits **both** a color and a size/line-height — which once inflated the active tab to 44px instead of 35px because the count badge inherited the 24px line-height. The separate token exists to prevent that.
 
-### Tipografi
+### Typography
 
-| Family | Font | Variable |
+| Utility | Family | Variable |
 |---|---|---|
 | `font-display` | Sora | `--font-display` |
 | `font-sans` | Inter | `--font-body` |
 
 ### Motion
 
-- Timing: `ease-cine` = `cubic-bezier(0.16, 1, 0.3, 1)`
-- Animation: `animate-rise` (0.55s), `animate-breathe` (2.4s)
-- Semua dimatikan di bawah `prefers-reduced-motion: reduce`
+- Easing: `ease-cine` = `cubic-bezier(0.16, 1, 0.3, 1)`
+- Animations: `animate-rise` (0.55s), `animate-breathe` (2.4s)
+- Every one of them is disabled under `prefers-reduced-motion: reduce`
+
+### Layout rule
+
+`app/globals.css` sets `overflow-x: clip` on `html, body` — **not `hidden`**. `overflow-x: hidden` turns the body into a scroll container, which stops the sticky header from sticking. Do not change it.
 
 ---
 
 ## SEO
 
-| Berkas | Fungsi |
+| File | Role |
 |---|---|
 | `app/layout.tsx` | `metadataBase`, title, description, canonical, Open Graph, Twitter card, `robots: index/follow` |
-| `app/robots.ts` | Menghasilkan `/robots.txt`, mengizinkan semua crawler dan menunjuk ke sitemap |
-| `app/sitemap.ts` | Menghasilkan `/sitemap.xml`, `changeFrequency: daily` |
+| `app/robots.ts` | Emits `/robots.txt`, allows all crawlers, points at the sitemap |
+| `app/sitemap.ts` | Emits `/sitemap.xml`, `changeFrequency: daily` |
+| `app/opengraph-image.png` | 1200×630 social card |
 | `app/icon.svg` | Favicon |
-| `app/opengraph-image.png` | Gambar social sharing |
 
-**Domain muncul di tiga tempat** — kalau domain berubah, ubah ketiganya:
+**The domain appears in three places.** Changing it means changing all three:
 
-1. `app/layout.tsx` → `metadataBase` dan `openGraph.url`
+1. `app/layout.tsx` → `metadataBase` and `openGraph.url`
 2. `app/robots.ts` → `sitemap`
 3. `app/sitemap.ts` → `url`
 
-Langkah produksi yang tidak bisa dilakukan dari repo: daftarkan situs di **Google Search Console** lalu submit `https://www.link-film.eu.org/sitemap.xml`.
-
----
-
-## Aksesibilitas
-
-- Semantik HTML: heading hierarchy, landmark elements
-- Skip link dan `:focus-visible` outline
-- `RegionTabs` mengikuti ARIA tabs pattern
-- Ikon dekoratif selalu `aria-hidden="true"`
-- Touch target CTA minimal 44×44px
-- `prefers-reduced-motion` mematikan semua animasi dan transisi
-- Nama aksesibel dari label dan hitungan, bukan dari ikon saja
+One production step cannot be done from this repo: register the site in **Google Search Console** and submit `https://www.link-film.eu.org/sitemap.xml`.
 
 ---
 
 ## Deployment
 
-### Vercel (rekomendasi)
+**Vercel (recommended)**
 
-1. Push repo ke GitHub
-2. [vercel.com](https://vercel.com) → login dengan GitHub
-3. **Add New → Project** → pilih repo → **Deploy**
+1. Push the repo to GitHub
+2. [vercel.com](https://vercel.com) → sign in with GitHub
+3. **Add New → Project** → pick the repo → **Deploy**
 
-**Jangan lupa** sesuaikan domain di tiga tempat pada bagian [SEO](#seo) sebelum deploy produksi.
+Set the final domain in the three places listed under [SEO](#seo) first.
 
-### Alternatif
+**Alternatives**
 
-- **Netlify** / **Cloudflare Pages** — tanpa konfigurasi tambahan
-- **GitHub Pages** — butuh `output: 'export'` di `next.config.mjs`; catat bahwa `lib/live-link.ts` melakukan fetch saat request, jadi model static export mengubah perilakunya
+- **Netlify** or **Cloudflare Pages** — work without extra configuration
+- **GitHub Pages** — needs `output: 'export'` in `next.config.mjs`. Note that `lib/live-link.ts` fetches at request time, so a static export changes its behaviour.
 
 ---
 
-## Catatan Teknis
+## Troubleshooting
 
-Hal-hal yang perlu diketahui sebelum mengubah project ini:
+| Symptom | Cause | Fix |
+|---|---|---|
+| A logo shows as a blurred box | Image optimizer hangs on the Turbopack-hashed filename at `w=640` | Reference the logo by `public/` path, not a static import |
+| Dev server breaks after a build | `next build` and `next dev` share `.next/` | Never build while dev is running |
+| `npm run lint` fails | `eslint` is not installed | Use `npx tsc --noEmit` |
+| Sticky header stops sticking | `overflow-x: hidden` on `body` | Use `overflow-x: clip` |
+| `text-base` looks oversized | Color token and font-size utility collide | Use `text-on-accent` |
+| "Multiple lockfiles detected" warning | Nested worktrees carry their own lockfile | `turbopack.root` is already pinned in `next.config.mjs` |
 
-- **`npm run lint` tidak berjalan.** `package.json` mendefinisikan `next lint`, tetapi `eslint` tidak ada di `devDependencies`. Gunakan `npx tsc --noEmit` sebagai gerbang verifikasi.
-- **Tailwind v3, bukan v4.** Token ada di `tailwind.config.ts`. Beberapa dokumen di `docs/` ditulis dengan asumsi v4 dan tidak sesuai kondisi kode.
-- **Jangan `npm run build` saat dev server hidup** — keduanya memakai `.next/` yang sama.
-- **`next.config.mjs` mengunci `turbopack.root`** ke `process.cwd()` untuk mencegah warning "multiple lockfiles" saat repo ini berada di samping worktree lain.
-- **Path `public/` vs static import** — static import memberi nama file ber-hash Turbopack, dan optimizer gambar dev server pernah menggantung tanpa batas pada nama tersebut di `w=640`. Bila sebuah logo tampil sebagai kotak buram, ini penyebab pertamanya.
-- **Nama brand dan domain berbeda.** Halaman ini menampilkan "Golden Movie Hub", sementara domain dan nama repo adalah `link-film`. `package.json` masih bernama `golden-movie-hub`. Belum disatukan.
-- **Tidak ada berkas `LICENSE`** di repo ini.
+---
+
+## Known limitations
+
+- **`npm run lint` does not work** — `eslint` is missing from `devDependencies`, though the script is defined.
+- **Brand and domain disagree** — the UI says "Golden Movie Hub"; the repo and domain say `link-film`. `package.json` is still named `golden-movie-hub`.
+- **No `LICENSE` file** exists in this repository.
+- **Documentation drift** — parts of `docs/` were written against a Tailwind v4 assumption that the code does not follow.
+
+---
+
+## Contributing
+
+Read **`AGENTS.md`** before changing anything — it lists the hard rules this codebase depends on, and the traps that have already caused bugs once.
 
 ---
 
 ## Credits
 
-- Tipografi: [Sora](https://fonts.google.com/specimen/Sora) & [Inter](https://rsms.me/inter/) oleh Rasmus Andersson
-- Framework: [Next.js](https://nextjs.org/) oleh Vercel
-- Animasi: [GSAP](https://gsap.com/)
+- [Sora](https://fonts.google.com/specimen/Sora) and [Inter](https://rsms.me/inter/) by Rasmus Andersson
+- [Next.js](https://nextjs.org/) by Vercel
+- [GSAP](https://gsap.com/)
 
 ---
 
 <div align="center">
 
-**Direktori tautan. Seluruh konten berada di situs masing-masing provider, bukan di sini.**
+**A link directory. All content stays on each provider's own site — never here.**
 
 </div>
