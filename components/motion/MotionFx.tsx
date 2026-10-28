@@ -21,6 +21,19 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+/**
+ * Tilt and the spotlight are *pointer* effects: they only mean anything to a
+ * device with a hovering, fine pointer. On a phone or tablet there is no hover
+ * and `pointermove` only fires mid-drag, so mounting them bought a GSAP
+ * context, three listeners and a permanent compositing layer per card — for an
+ * effect the device could never show. That was a measurable slice of the cost
+ * of switching region tabs on a low-end phone.
+ */
+function canHover() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+}
+
 /* ------------------------------------------------------------------ */
 /* useSpotlight — feeds `--mx` / `--my` to a `.spotlight-overlay` child */
 /* ------------------------------------------------------------------ */
@@ -32,7 +45,7 @@ export function useSpotlight<T extends HTMLElement = HTMLDivElement>() {
     () => {
       const el = ref.current;
       if (!el) return;
-      if (prefersReducedMotion()) return;
+      if (prefersReducedMotion() || !canHover()) return;
 
       const setX = gsap.quickSetter(el, "--mx", "px");
       const setY = gsap.quickSetter(el, "--my", "px");
@@ -73,7 +86,7 @@ export function Tilt({ children, className = "", max = 6, scale = 1.015 }: TiltP
     () => {
       const el = ref.current;
       if (!el) return;
-      if (prefersReducedMotion()) return;
+      if (prefersReducedMotion() || !canHover()) return;
 
       const quick = { ease: "power3.out", duration: 0.55 } as const;
       const rotateX = gsap.quickTo(el, "rotateX", quick);
@@ -111,7 +124,6 @@ export function Tilt({ children, className = "", max = 6, scale = 1.015 }: TiltP
     <div
       ref={ref}
       className={`[transform-style:preserve-3d] ${className}`}
-      style={{ willChange: "transform" }}
     >
       {children}
     </div>
@@ -190,12 +202,13 @@ export function Aurora({ className = "" }: { className?: string }) {
 
   useGSAP(
     () => {
-      const blobs = ref.current?.querySelectorAll<HTMLElement>("[data-blob]");
-      if (!blobs || blobs.length === 0) return;
+      const el = ref.current;
+      const blobs = el?.querySelectorAll<HTMLElement>("[data-blob]");
+      if (!el || !blobs || blobs.length === 0) return;
 
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
-        blobs.forEach((blob, index) => {
+        const tweens = Array.from(blobs).map((blob, index) =>
           gsap.to(blob, {
             xPercent: index % 2 === 0 ? 16 : -14,
             yPercent: index % 2 === 0 ? 10 : -12,
@@ -205,8 +218,26 @@ export function Aurora({ className = "" }: { className?: string }) {
             repeat: -1,
             yoyo: true,
             delay: index * 1.2,
-          });
-        });
+            force3D: true,
+          }),
+        );
+
+        /* These are two large blurred layers on an endless tween, and they used
+           to keep animating for as long as the tab was open — including the
+           whole time the visitor is reading the card list far below. Pausing
+           offscreen hands that back to the phone while it scrolls the grid. */
+        const io = new IntersectionObserver(
+          ([entry]) => {
+            tweens.forEach((tween) => {
+              if (entry.isIntersecting) tween.resume();
+              else tween.pause();
+            });
+          },
+          { rootMargin: "120px" },
+        );
+        io.observe(el);
+
+        return () => io.disconnect();
       });
       return () => mm.revert();
     },
@@ -221,11 +252,11 @@ export function Aurora({ className = "" }: { className?: string }) {
     >
       <span
         data-blob
-        className="absolute -left-[14%] -top-[42%] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,215,0,0.20),transparent_66%)] blur-[64px] will-change-transform"
+        className="absolute -left-[14%] -top-[42%] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(255,215,0,0.20),transparent_66%)] blur-[38px] will-change-transform sm:blur-[64px]"
       />
       <span
         data-blob
-        className="absolute -right-[10%] -top-[30%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(45,212,191,0.18),transparent_66%)] blur-[64px] will-change-transform"
+        className="absolute -right-[10%] -top-[30%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(45,212,191,0.18),transparent_66%)] blur-[38px] will-change-transform sm:blur-[64px]"
       />
     </div>
   );

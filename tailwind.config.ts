@@ -35,6 +35,9 @@ const config: Config = {
         teal: {
           DEFAULT: "#2DD4BF",
           soft: "#5EEAD4",
+          // Darker fill for the wrap-around fold of the recommended hang-tag,
+          // mirroring gold.deep so both accents read the same at the edge.
+          deep: "#0D9488",
         },
       },
       fontFamily: {

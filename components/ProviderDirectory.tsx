@@ -47,6 +47,8 @@ function matches(provider: Provider, nq: string): boolean {
     normalize(provider.tagline).includes(nq) ||
     normalize(provider.kicker).includes(nq) ||
     normalize(provider.quality).includes(nq) ||
+    // The card shows a "Rekomendasi" pill, so the word has to find it too.
+    (provider.recommended === true && normalize("rekomendasi").includes(nq)) ||
     normalize(region.label).includes(nq) ||
     normalize(region.title).includes(nq) ||
     normalize(region.code).includes(nq)
@@ -100,21 +102,14 @@ export default function ProviderDirectory({
   /* ---- filtering ---------------------------------------------------- */
   /*
    * A rotating-domain provider carries an info page as its static `url` plus a
-   * server-resolved address in `liveUrls`. Preferring the resolved one is the
-   * whole point: the card links straight at the site that works right now.
+   * server-resolved address in `liveUrls`. The resolved one is preferred — the
+   * whole point is that the card links straight at the site that works now.
+   *
+   * It is passed to the card as its own prop rather than merged into a copied
+   * provider object: copying gave every card a new identity on every region
+   * switch, which defeated memoisation and made React rebuild the whole list.
    */
-  const region = useMemo(() => {
-    const base = getRegion(regionId);
-    if (!liveUrls || Object.keys(liveUrls).length === 0) return base;
-
-    return {
-      ...base,
-      items: base.items.map((item) => {
-        const live = liveUrls[item.id];
-        return live && live !== item.url ? { ...item, url: live } : item;
-      }),
-    };
-  }, [regionId, liveUrls]);
+  const region = getRegion(regionId);
   const nq = prepareQuery(query);
 
   const filtered = useMemo(
@@ -142,7 +137,13 @@ export default function ProviderDirectory({
         ? "empty-region"
         : "no-results";
 
-  /* ---- staggered card entrance, re-run on every real change ---------- */
+  /* ---- staggered card entrance, re-run on every real change ----------
+   * GSAP, but split in two: the `set` runs in the layout effect (one style
+   * write per card, cheap) and the tween is created on the next animation
+   * frame. Creating the whole stagger inline held the first frame while GSAP
+   * measured and re-animated every card, which is what made tapping a region
+   * tab stutter — the animation itself is unchanged.
+   */
   useGSAP(
     () => {
       const cards = gridRef.current?.querySelectorAll<HTMLElement>("[data-card]");
@@ -151,11 +152,13 @@ export default function ProviderDirectory({
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
         gsap.from(cards, {
-          y: 18,
+          y: 16,
           opacity: 0,
-          duration: 0.6,
+          duration: 0.45,
           ease: "expo.out",
-          stagger: 0.055,
+          stagger: 0.035,
+          force3D: true,
+          overwrite: true,
         });
       });
       return () => mm.revert();
@@ -188,7 +191,7 @@ export default function ProviderDirectory({
   return (
     <section aria-labelledby="directory-heading">
       {/* ---- control bar ---- */}
-      <div className="sticky top-16 z-30 bg-base/90 backdrop-blur-xl">
+      <div className="sticky top-16 z-30 bg-base sm:bg-base/90 sm:backdrop-blur-xl">
         <div className="mx-auto max-w-[1120px] px-5 sm:px-8">
           <div className="flex flex-col gap-3 border-b border-line pb-3 pt-4 md:flex-row md:items-center md:justify-between">
             <RegionTabs
@@ -244,9 +247,9 @@ export default function ProviderDirectory({
               ref={gridRef}
               className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
             >
-              {filtered.map((provider, index) => (
+              {filtered.map((provider) => (
                 <div key={provider.id} data-card className="w-full">
-                  <ProviderCard provider={provider} index={index} />
+                  <ProviderCard provider={provider} url={liveUrls?.[provider.id]} />
                 </div>
               ))}
             </div>

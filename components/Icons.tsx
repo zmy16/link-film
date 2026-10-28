@@ -64,6 +64,16 @@ export const IconPin = (p: IconProps) => (
   </svg>
 );
 
+export const IconStar = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path
+      d="M12 3.4l2.68 5.43 5.99.87-4.34 4.23 1.03 5.97L12 17.08l-5.36 2.82 1.03-5.97-4.34-4.23 5.99-.87z"
+      fill="currentColor"
+      stroke="none"
+    />
+  </svg>
+);
+
 export const IconShuffle = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M4 7h3.2l3.1 4.4" />

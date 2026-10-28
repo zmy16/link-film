@@ -203,14 +203,18 @@ h6 {
 }
 
 @layer utilities {
-  /* Logo push-in on card hover; suppressed under reduced motion below. */
+  /* Logo push-in on card hover; suppressed under reduced motion below.
+     `will-change` is scoped to the hover state on purpose: declared on the
+     base rule it promoted all seven logos to their own compositing layer for
+     the whole session, to serve an effect that only exists while a cursor is
+     over the card. */
   .poster-hover-scale {
     transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform;
   }
 
   .group:hover .poster-hover-scale {
     transform: scale(1.06);
+    will-change: transform;
   }
 
   /* Accent hairline that draws left-to-right on hover. */

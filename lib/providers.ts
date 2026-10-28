@@ -1,21 +1,30 @@
 import type { StaticImageData } from "next/image";
 
-import rebahinLogo from "@/public/logos/rebahin.png";
-import kitanontonLogo from "@/public/logos/kitanonton.png";
-import ngefilm21Logo from "@/public/logos/ngefilm21.png";
-import layarkaca21Logo from "@/public/logos/layarkaca21.png";
-import idlixLogo from "@/public/logos/idlix.png";
-import pusatfilmLogo from "@/public/logos/pusatfilm.png";
-
 /**
- * Duta Film is referenced by its public path instead of a static import on
- * purpose. A static import gives the file a Turbopack content-hashed name
- * (`dutafilm.16~_qn6wp~.~8.png`), and the dev image optimizer hangs forever on
- * that name at w=640 — the width the browser picks for the 112px slot on a 2x
- * screen. The request never resolves, so next/image leaves its blur
- * placeholder on screen and the logo renders as a smudge. The same bytes served
- * from /logos/ optimise in ~0.2s. */
-const dutafilmLogo = "/logos/dutafilm.png";
+ * Logos are plain `/logos/*.webp` public paths, not static imports, for three
+ * reasons:
+ *
+ *  1. A static import gives the file a Turbopack content-hashed name
+ *     (`dutafilm.16~_qn6wp~.~8.png`), and the dev image optimizer hangs forever
+ *     on some of those names at w=640 — the width the browser picks for a
+ *     retina card slot. The request never resolves, so next/image leaves its
+ *     blur placeholder on screen and the logo renders as a smudge.
+ *  2. WebP sources at 640px are 150KB for all seven, against 1.93MB of
+ *     1000px PNG — the optimizer decodes the source for every uncached
+ *     variant, so a smaller, already-compressed source is cheaper end to end.
+ *  3. A `public/` path carries the week-long Cache-Control set in
+ *     `next.config.mjs`; a hashed build asset is uncacheable across deploys.
+ *
+ * `logo` keeps the `StaticImageData | string` union so a future source can
+ * still be a static import without touching the card.
+ */
+const rebahinLogo = "/logos/rebahin.webp";
+const kitanontonLogo = "/logos/kitanonton.webp";
+const ngefilm21Logo = "/logos/ngefilm21.webp";
+const layarkaca21Logo = "/logos/layarkaca21.webp";
+const idlixLogo = "/logos/idlix.webp";
+const pusatfilmLogo = "/logos/pusatfilm.webp";
+const dutafilmLogo = "/logos/dutafilm.webp";
 
 export type RegionId = "all" | "id" | "int";
 
@@ -39,6 +48,10 @@ export type Provider = {
   liveInfoUrl?: string;
   /** Short uppercase kicker shown above the name, e.g. "FILM & SERIES". */
   kicker: string;
+  /** Editor's pick. Renders a solid accent pill on the card and is searchable
+   *  as "rekomendasi". An endorsement of the site, not a claim about its
+   *  catalogue — keep it to the few that actually earn it. */
+  recommended?: boolean;
   /** Static import, or a /public path when the file must bypass the hashed
    *  static-media name (see dutafilmLogo above). */
   logo: StaticImageData | string;
@@ -61,8 +74,9 @@ export type Region = {
   items: Provider[];
 };
 
-/** The two real regions — the source of truth for provider data. */
-export const REGIONS: Region[] = [
+/** The two real regions — the source of truth for provider data.
+ *  Array order here is not display order; see `recommendFirst` below. */
+const REGION_DATA: Region[] = [
   {
     id: "id",
     label: "Film Indonesia",
@@ -104,6 +118,7 @@ export const REGIONS: Region[] = [
         kicker: "Kualitas Tinggi",
         logo: ngefilm21Logo,
         region: "id",
+        recommended: true,
       },
       {
         id: "pusatfilm",
@@ -115,6 +130,7 @@ export const REGIONS: Region[] = [
         kicker: "Film & Serial",
         logo: pusatfilmLogo,
         region: "id",
+        recommended: true,
       },
       {
         id: "dutafilm",
@@ -157,10 +173,26 @@ export const REGIONS: Region[] = [
         kicker: "Update Harian",
         logo: idlixLogo,
         region: "int",
+        recommended: true,
       },
     ],
   },
 ];
+
+/** Recommended sites lead every list, so the endorsement is the first thing a
+ *  visitor sees instead of something they discover by scrolling. `Array.sort`
+ *  is stable, so declaration order is preserved within each group. */
+function recommendFirst(items: Provider[]): Provider[] {
+  return [...items].sort(
+    (a, b) => Number(b.recommended === true) - Number(a.recommended === true),
+  );
+}
+
+/** The two real regions, each with its items in display order. */
+export const REGIONS: Region[] = REGION_DATA.map((region) => ({
+  ...region,
+  items: recommendFirst(region.items),
+}));
 
 const ALL_PROVIDERS = REGIONS.flatMap((region) => region.items);
 
@@ -187,8 +219,8 @@ function regionSize(regionId: Exclude<RegionId, "all">): number {
   return REGIONS.find((region) => region.id === regionId)?.items.length ?? 0;
 }
 
-/** The "see everything" view — a synthetic region whose items are the
- *  concatenation of both real regions, in declaration order. */
+/** The "see everything" view — a synthetic region whose items are every
+ *  provider from both real regions, recommended ones first. */
 export const ALL_REGION: Region = {
   id: "all",
   label: "Semua Situs",
@@ -197,7 +229,7 @@ export const ALL_REGION: Region = {
   title: "Semua Provider",
   blurb: `Seluruh situs dalam direktori ini — ${countWord(regionSize("id"))} lokal Indonesia, ${countWord(regionSize("int"))} mancanegara — semuanya dengan subtitle Bahasa Indonesia.`,
   accent: "gold",
-  items: ALL_PROVIDERS,
+  items: recommendFirst(ALL_PROVIDERS),
 };
 
 /** Tab order: the catch-all first, then the real regions. */
@@ -243,6 +275,7 @@ export function accentClasses(accent: Accent) {
       posterGlow: "poster-glow-teal",
       spotlight: "spotlight-overlay spotlight-overlay-teal",
       badge: "border-teal/45 bg-base/70 text-teal",
+      fold: "bg-teal-deep",
       cardHover:
         "hover:border-teal/55 focus-visible:border-teal/55",
       ctaHover:
@@ -258,6 +291,7 @@ export function accentClasses(accent: Accent) {
     posterGlow: "poster-glow-gold",
     spotlight: "spotlight-overlay",
     badge: "border-gold/45 bg-base/70 text-gold",
+    fold: "bg-gold-deep",
     cardHover:
       "hover:border-gold/55 focus-visible:border-gold/55",
     ctaHover:

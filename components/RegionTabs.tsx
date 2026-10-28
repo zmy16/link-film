@@ -60,11 +60,18 @@ export default function RegionTabs({
   }
 
   return (
+    // Mobile and tablet: the three tabs share the row equally (`flex-1`) and
+    // the row is `w-full`, so the box never has a hollow strip on the right
+    // and never needs a horizontal scroll — which it did below ~390px, hiding
+    // the last tab on most phones. Icons and count chips are dropped at the
+    // narrowest widths (they cost ~20px and ~23px per tab) and return as soon
+    // as there is room. Only once the bar becomes a row with the search field
+    // (md) does the group hug its content and sit on the left.
     <div
       role="tablist"
       aria-label="Region film"
       onKeyDown={handleKeyDown}
-      className="flex w-full items-center gap-1 overflow-x-auto rounded-xl border border-line bg-surface/60 p-1 sm:w-auto"
+      className="flex w-full items-center gap-1 rounded-xl border border-line bg-surface/60 p-1 md:w-fit"
     >
       {regions.map((region) => {
         const isActive = region.id === value;
@@ -89,7 +96,7 @@ export default function RegionTabs({
               // chip used to inherit a 24px line-height from a colliding
               // `text-base` utility, which pushed the active tab to 44px while
               // its neighbours stayed at 35px.
-              "flex h-9 shrink-0 items-center gap-1.5 rounded-lg px-2 text-[11px] font-semibold transition-colors duration-300 sm:gap-2 sm:px-3.5 sm:text-[12px]",
+              "flex h-9 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg px-1.5 text-[11px] font-semibold transition-colors duration-300 sm:gap-2 sm:px-3.5 sm:text-[12px] md:flex-none",
               isActive
                 ? `${accent.bg} ${accent.onAccent}`
                 : "text-muted hover:bg-surface-2 hover:text-ink",
@@ -98,9 +105,9 @@ export default function RegionTabs({
             <RegionIcon
               size={14}
               aria-hidden="true"
-              className={isActive ? "opacity-75" : "opacity-70"}
+              className={`hidden shrink-0 min-[480px]:block ${isActive ? "opacity-75" : "opacity-70"}`}
             />
-            <span className="whitespace-nowrap">
+            <span className="truncate whitespace-nowrap">
               <span className="sm:hidden">{region.short}</span>
               <span className="hidden sm:inline">{region.label}</span>
             </span>
@@ -108,7 +115,7 @@ export default function RegionTabs({
               className={[
                 // Explicit box: identical in both states whatever line-height
                 // or font-size a future class may introduce.
-                "inline-flex h-[17px] min-w-[17px] items-center justify-center rounded px-1 text-[9.5px] font-bold leading-none tabular-nums sm:h-[18px] sm:min-w-[18px] sm:px-1.5 sm:text-[10px]",
+                "hidden h-[17px] min-w-[17px] items-center justify-center rounded px-1 text-[9.5px] font-bold leading-none tabular-nums min-[400px]:inline-flex sm:h-[18px] sm:min-w-[18px] sm:px-1.5 sm:text-[10px]",
                 isActive ? "bg-base/20" : "bg-surface-2 text-muted",
               ].join(" ")}
             >

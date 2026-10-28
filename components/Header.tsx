@@ -3,7 +3,12 @@ import ScrollProgress from "./ScrollProgress";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-base/85 backdrop-blur-xl">
+    // Opaque below `sm` on purpose: these two bars are sticky, so a blurred or
+    // translucent fill means re-blurring / blending the content behind them on
+    // every scrolled frame — the expensive part on a phone — and at 95% the
+    // headline ghosted through the header. Solid is cheaper and reads cleaner;
+    // the frosted look returns from `sm` up.
+    <header className="sticky top-0 z-40 border-b border-line/70 bg-base sm:bg-base/85 sm:backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-[1120px] items-center px-5 sm:px-8">
         <a
           href="/"

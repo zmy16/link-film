@@ -3,16 +3,19 @@ import { Inter, Sora } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
+// Only the weights this UI actually asks for. Sora is used exclusively with
+// font-bold / font-extrabold and Inter with 400 / 600 / 700 — the extra
+// weights were downloaded and preloaded on every visit to render nothing.
 const sora = Sora({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["700", "800"],
   variable: "--font-display",
   display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-body",
   display: "swap",
 });
