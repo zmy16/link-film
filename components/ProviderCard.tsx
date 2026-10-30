@@ -82,6 +82,13 @@ function ProviderCardBase({ provider, url }: ProviderCardProps) {
           (01, 02 …), which said nothing a visitor wanted and pushed the
           useful chips into a corner. */}
       <span className="relative flex flex-wrap items-center justify-end gap-1.5 px-4 pt-4">
+        {/* What you can watch, spelled out. The footer used to carry the bare
+            "ID" / "INT" code here, which only decodes if you already know the
+            convention — and the card's accent colour, the only other hint, is
+            not something a first-time visitor can be expected to read. */}
+        <span className={`rounded border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.14em] ${tone.tag}`}>
+          {region.tag}
+        </span>
         <span
           className={`rounded border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.14em] ${tone.badge}`}
         >
@@ -140,9 +147,6 @@ function ProviderCardBase({ provider, url }: ProviderCardProps) {
             Nonton
           </span>
           <span className="flex items-center gap-2">
-            <span className="font-mono text-[9px] uppercase tracking-[0.16em] opacity-60">
-              {region.code}
-            </span>
             <IconArrowRight
               size={13}
               aria-hidden="true"

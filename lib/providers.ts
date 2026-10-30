@@ -67,6 +67,11 @@ export type Region = {
   /** Two-letter code rendered as a chip. Emoji flags are deliberately not
    *  used: Windows has no flag glyphs and renders them as empty boxes. */
   code: string;
+  /** Short tag worn on every card so a visitor can tell at a glance whether a
+   *  site carries Indonesian or foreign titles. Deliberately not `short`
+   *  ("Indonesia" says where the SITE is, not what you can WATCH) and not
+   *  `code` ("ID"/"INT" only decode if you already know the convention). */
+  tag: string;
   /** Heading shown above the grid. */
   title: string;
   blurb: string;
@@ -82,6 +87,7 @@ const REGION_DATA: Region[] = [
     label: "Film Indonesia",
     short: "Indonesia",
     code: "ID",
+    tag: "Film Indo",
     title: "Produksi Indonesia",
     blurb:
       "Situs lokal dengan koleksi film dan series Indonesia, plus judul mancanegara ber-subtitle Indonesia.",
@@ -149,6 +155,7 @@ const REGION_DATA: Region[] = [
     label: "Film Luar Negeri",
     short: "Luar Negeri",
     code: "INT",
+    tag: "Film Luar",
     title: "Box Office Internasional",
     blurb:
       "Judul Hollywood, Asia, dan Eropa — semuanya dengan subtitle Bahasa Indonesia.",
@@ -226,6 +233,9 @@ export const ALL_REGION: Region = {
   label: "Semua Situs",
   short: "Semua",
   code: "ALL",
+  // Never worn by a card: cards read the accent/region of the provider, and
+  // `provider.region` is always a real region. Kept for type completeness.
+  tag: "Semua",
   title: "Semua Provider",
   blurb: `Seluruh situs dalam direktori ini — ${countWord(regionSize("id"))} lokal Indonesia, ${countWord(regionSize("int"))} mancanegara — semuanya dengan subtitle Bahasa Indonesia.`,
   accent: "gold",
@@ -275,6 +285,7 @@ export function accentClasses(accent: Accent) {
       posterGlow: "poster-glow-teal",
       spotlight: "spotlight-overlay spotlight-overlay-teal",
       badge: "border-teal/45 bg-base/70 text-teal",
+      tag: "border-teal/30 bg-teal/10 text-teal",
       fold: "bg-teal-deep",
       cardHover:
         "hover:border-teal/55 focus-visible:border-teal/55",
@@ -291,6 +302,7 @@ export function accentClasses(accent: Accent) {
     posterGlow: "poster-glow-gold",
     spotlight: "spotlight-overlay",
     badge: "border-gold/45 bg-base/70 text-gold",
+    tag: "border-gold/30 bg-gold/10 text-gold",
     fold: "bg-gold-deep",
     cardHover:
       "hover:border-gold/55 focus-visible:border-gold/55",

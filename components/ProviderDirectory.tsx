@@ -50,6 +50,7 @@ function matches(provider: Provider, nq: string): boolean {
     // The card shows a "Rekomendasi" pill, so the word has to find it too.
     (provider.recommended === true && normalize("rekomendasi").includes(nq)) ||
     normalize(region.label).includes(nq) ||
+    normalize(region.tag).includes(nq) ||
     normalize(region.title).includes(nq) ||
     normalize(region.code).includes(nq)
   );
