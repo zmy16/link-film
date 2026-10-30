@@ -39,3 +39,9 @@ next-env.d.ts
 
 # sokudo working dir (worktrees, previews, spec drafts)
 /.sokudo/
+
+# agent + planning docs — kept locally, never published (this repo is public).
+# AGENTS.md is still read by agents from the working copy; it just must not be
+# pushed. Same for docs/ (requirements, design, design-decisions).
+/AGENTS.md
+/docs/
