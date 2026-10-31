@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -66,6 +67,12 @@ export default function RootLayout({
       <body className="min-h-screen bg-base font-sans text-ink antialiased">
         {children}
         <Analytics />
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="a45ea7e2-7aa2-4bde-baf9-ce744d07d8aa"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
