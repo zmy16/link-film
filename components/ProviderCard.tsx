@@ -97,6 +97,16 @@ function ProviderCardBase({ provider, url }: ProviderCardProps) {
       </span>
 
       <span className="relative flex flex-1 items-center justify-center px-6 py-1">
+        {/* The logo used to carry `drop-shadow(0 12px 32px …)`. A drop-shadow is
+            a real FILTER: the browser blurs a 32px-radius silhouette of the
+            logo, and the grid has seven of them live at once — one of the most
+            expensive paint operations on a low-end phone. This radial plate is
+            a static gradient painted once, and at this size the two are hard to
+            tell apart. */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(52%_40%_at_50%_48%,rgba(0,0,0,0.6),transparent_72%)]"
+        />
         <Image
           src={provider.logo}
           alt=""
@@ -116,7 +126,7 @@ function ProviderCardBase({ provider, url }: ProviderCardProps) {
           // the same on a 280px phone card and an 470px tablet one, where a
           // fixed px logo was cramped on the small card and shrank on the big
           // one — the same card never looked quite the same twice.
-          className="poster-hover-scale h-auto w-[40%] object-contain drop-shadow-[0_12px_32px_rgba(0,0,0,0.75)]"
+          className="poster-hover-scale h-auto w-[40%] object-contain"
         />
       </span>
 

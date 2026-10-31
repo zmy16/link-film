@@ -117,6 +117,26 @@ h6 {
     color: transparent;
   }
 
+  /* The sweep itself. It lives here rather than in a GSAP tween on purpose:
+     `background-position` repaints the glyphs no matter who drives it, but a CSS
+     animation hands that repaint to the browser while leaving the main thread
+     alone — a JS tween re-wrote the inline style on every frame and kept the
+     GSAP ticker running forever, which showed up as a scroll that stuttered on
+     a cheap phone. `alternate` is the old `yoyo: true`, `ease-in-out` the old
+     `sine.inOut`. */
+  .gradient-sweep-animated {
+    animation: gradient-sweep 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes gradient-sweep {
+    from {
+      background-position: 0% center;
+    }
+    to {
+      background-position: 200% center;
+    }
+  }
+
   /* Cursor-following spotlight; --mx/--my are written by useSpotlight(). */
   .spotlight-overlay {
     background-image: radial-gradient(

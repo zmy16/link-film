@@ -125,16 +125,12 @@ export function GradientText({
           delay,
         });
 
-        if (animated) {
-          gsap.to(el, {
-            backgroundPosition: "200% center",
-            duration: 9,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-            delay: delay + 0.5,
-          });
-        }
+        /* The endless sweep used to be a `repeat: -1` GSAP tween here. It is
+           now the CSS animation on `.gradient-sweep-animated` (app/globals.css):
+           same picture, but zero main-thread work — the old tween rewrote
+           `background-position` every frame and kept GSAP's ticker awake for as
+           long as the tab was open, which is exactly what a low-end phone cannot
+           afford while it is scrolling the card grid. */
       });
       return () => mm.revert();
     },
@@ -142,7 +138,11 @@ export function GradientText({
   );
 
   return (
-    <span ref={ref} className={`gradient-sweep ${className}`}>
+    <span
+      ref={ref}
+      className={`gradient-sweep ${animated ? "gradient-sweep-animated" : ""} ${className}`}
+      style={animated ? { animationDelay: `${delay + 0.5}s` } : undefined}
+    >
       {children}
     </span>
   );
